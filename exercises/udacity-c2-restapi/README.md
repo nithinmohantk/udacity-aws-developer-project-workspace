@@ -12,9 +12,20 @@ A basic Ionic client web application which consumes the RestAPI Backend.
 ***
 ## Getting Setup
 
+
 ### Installing project dependencies
 
-This project uses NPM to manage software dependencies. NPM Relies on the package.json file located in the root of this repository. After cloning, open your terminal and run:
+This project uses NPM to manage software dependencies. 
+
+#### Global Dependencies 
+This project relies on bestzip for archiving zip files in windows without the need of 7Zip or any other executable.
+
+Open your terminal and run the following commands one by one: 
+```bash
+npm install -g bestzip
+```
+### Local Dependencies 
+NPM Relies on the package.json file located in the root of this repository. After cloning, open your terminal and run:
 ```bash
 npm install
 ```
