@@ -1,6 +1,11 @@
 ## Introduction 
 This repository contains my practical project works for **Udacity Cloud Developer Nano Degree program**.  As part of working from home due to **COVID-19**, I decided to utilize my free time and do something to upskill myself with help of available free resources. With such interest I started with _[Udacity Cloud Developer Nano Degree](https://www.udacity.com/course/cloud-developer-nanodegree--nd9990)_
 
+## Project Status
+![udacity-c2-frontend CI](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/workflows/udacity-c2-frontend%20CI/badge.svg)
+![udacity-c2-basic-server CI](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/workflows/udacity-c2-basic-server%20CI/badge.svg)
+![udacity-c2-restapi CI](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/workflows/udacity-c2-restapi%20CI/badge.svg)
+
 ## Getting Started
 
 ### Folder Structure 
