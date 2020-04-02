@@ -5,6 +5,7 @@ This repository contains my practical project works for **Udacity Cloud Develope
 ![udacity-c2-frontend CI](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/workflows/udacity-c2-frontend%20CI/badge.svg)
 ![udacity-c2-basic-server CI](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/workflows/udacity-c2-basic-server%20CI/badge.svg)
 ![udacity-c2-restapi CI](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/workflows/udacity-c2-restapi%20CI/badge.svg)
+![project-c2-udagram CI](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/workflows/project-c2-udagram%20CI/badge.svg)
 
 ## Getting Started
 
