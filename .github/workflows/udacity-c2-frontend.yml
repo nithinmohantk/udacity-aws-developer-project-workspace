@@ -27,6 +27,6 @@ jobs:
     - run: cd exercises/udacity-c2-frontend/
     - run: cd exercises/udacity-c2-frontend/ && npm ci
     - run: cd exercises/udacity-c2-frontend/ && npm run build --if-present
-    - run: cd exercises/udacity-c2-frontend/ && npm test
+#    - run: cd exercises/udacity-c2-frontend/ && npm test
       env:
         CI: true
