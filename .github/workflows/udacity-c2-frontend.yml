@@ -1,13 +1,13 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: udacity-c2-frontend CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
   build:
@@ -24,8 +24,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - run: cd exercises/udacity-c2-frontend/
+    - run: cd exercises/udacity-c2-frontend/ && npm ci
+    - run: cd exercises/udacity-c2-frontend/ && npm run build --if-present
+#    - run: cd exercises/udacity-c2-frontend/ && npm test
       env:
         CI: true
