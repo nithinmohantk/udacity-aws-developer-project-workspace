@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Udagram-Exercises CI
+name: udacity-c2-basic-server CI
 
 on:
   push:
@@ -24,13 +24,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd exercises/udacity-c2-frontend/
-    - run: cd exercises/udacity-c2-frontend/ && npm ci
-    - run: cd exercises/udacity-c2-frontend/ && npm run build --if-present
-    - run: cd exercises/udacity-c2-frontend/ && npm test
-    - run: cd exercises/udacity-c2-restapi/
-    - run: cd exercises/udacity-c2-restapi/ && npm ci
-    - run: cd exercises/udacity-c2-restapi/ && npm run build --if-present
-    - run: cd exercises/udacity-c2-restapi/ && npm test
+    - run: cd exercises/udacity-c2-basic-server/
+    - run: cd exercises/udacity-c2-basic-server/ && npm ci
+    - run: cd exercises/udacity-c2-basic-server/ && npm run build --if-present
+   # - run: cd exercises/udacity-c2-basic-server/ && npm test
       env:
         CI: true
