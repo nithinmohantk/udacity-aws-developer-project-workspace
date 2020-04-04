@@ -1,7 +1,7 @@
 version: "3"
 services:
   reverseproxy:
-      image: sudkul/reverseproxy
+      image: thingxcloud/udacity-reverseproxy
       ports:
           - 8080:8080
       restart: always
@@ -9,12 +9,13 @@ services:
         - backend-user
         - backend-feed     
   backend-user:
-    image: sudkul/udacity-restapi-user
+    image: thingxcloud/udacity-restapi-user
     volumes:
       - $HOME/.aws:/root/.aws
     environment:
       POSTGRESS_USERNAME: $POSTGRESS_USERNAME
       POSTGRESS_PASSWORD: $POSTGRESS_PASSWORD 
+      POSTGRESS_DATABASE: $POSTGRESS_DB 
       POSTGRESS_DB: $POSTGRESS_DB 
       POSTGRESS_HOST: $POSTGRESS_HOST 
       AWS_REGION: $AWS_REGION 
@@ -23,12 +24,13 @@ services:
       JWT_SECRET: $JWT_SECRET
       URL: "http://localhost:8100"
   backend-feed:
-    image: sudkul/udacity-restapi-feed
+    image: thingxcloud/udacity-restapi-feed
     volumes:
       - $HOME/.aws:/root/.aws
     environment:
       POSTGRESS_USERNAME: $POSTGRESS_USERNAME
       POSTGRESS_PASSWORD: $POSTGRESS_PASSWORD 
+      POSTGRESS_DATABASE: $POSTGRESS_DB 
       POSTGRESS_DB: $POSTGRESS_DB 
       POSTGRESS_HOST: $POSTGRESS_HOST 
       AWS_REGION: $AWS_REGION 
@@ -37,6 +39,6 @@ services:
       JWT_SECRET: $JWT_SECRET
       URL: "http://localhost:8100"
   frontend:
-    image: sudkul/udacity-frontend:local
+    image: thingxcloud/udacity-frontend:local
     ports:
       - "8100:80"
