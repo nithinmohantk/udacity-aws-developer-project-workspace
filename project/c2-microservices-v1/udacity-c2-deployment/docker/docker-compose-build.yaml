@@ -6,13 +6,13 @@ services:
     image: thingxcloud/udacity-reverseproxy 
   backend_user:
     build:
-      context: ../../udacity-c3-restapi-user
+      context: ../../udacity-c2-restapi-user
     image: thingxcloud/udacity-restapi-user
   backend_feed:
     build:
-      context: ../../udacity-c3-restapi-feed  
+      context: ../../udacity-c2-restapi-feed  
     image: thingxcloud/udacity-restapi-feed
   frontend:
     build:
-      context: ../../udacity-c3-frontend  
+      context: ../../udacity-c2-frontend  
     image: thingxcloud/udacity-frontend:local
