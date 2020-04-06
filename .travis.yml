@@ -3,23 +3,23 @@ language: minimal
 services:
   - docker
 
-env: 
-  - DOCKER_COMPOSE_VERSION=1.23.2 
+env:
+  - DOCKER_COMPOSE_VERSION=1.23.2
 
 before_install:
   - docker -v && docker-compose -v
-  - sudo rm /usr/local/bin/docker-compose 
+  - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose 
-  - sudo mv docker-compose /usr/local/bin 
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
-  #- pip install python --upgrade --user 
+  #- pip install python --upgrade --user
   #- pip install --upgrade pip
   #- curl -LO https://storage.googleapis.com/kubernetes-release/release/$
   - pip --version
-  - python --version 
-  - pip install awscli --upgrade --user 
-  - aws --version
+  - python --version
+  - pip install awscli --upgrade --user
+  #- aws --version
   # Install ekscli
   - curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
   - sudo mv /tmp/eksctl /usr/local/bin
@@ -35,7 +35,7 @@ before_install:
   - sudo mv ./kubectl /usr/local/bin/kubectl
 
 install:
-  - docker-compose -f project/c2-microservices-v1/udacity-c2-deployment/docker/docker-compose-build.yaml build --parallel 
+  - docker-compose -f project/c2-microservices-v1/udacity-c2-deployment/docker/docker-compose-build.yaml build --parallel
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose -f project/c2-microservices-v1/udacity-c2-deployment/docker/docker-compose-build.yaml push
 
@@ -44,4 +44,3 @@ deploy:
    script: bash ci-scripts/deploy.sh
 #  on:
 #    branch: master
-    

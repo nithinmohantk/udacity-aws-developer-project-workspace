@@ -16,8 +16,10 @@ This repository contains my practical project works for **Udacity Cloud Develope
 - - _udacity-c2-restapi_
 - - _udacity-c2-frontend_ 
 - **project**  - contains actual project work submitted as part of the assignments for the curriculam
-- - staticsite_upload_s3
-- - image-filter-project
+
+- - Project 1: Static site_Upload_s3
+- - Project 2: Image-filter-service (Udagram API)
+- - Project 3: Microservices Udagram App
 
 ## Installation 
  The samples and projects found in this repository are created using Visual Studio Code and Node.js/NPM/ExpressJS stack and it require certain global NPM components and project NPM components(project.json). 
