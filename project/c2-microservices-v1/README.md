@@ -222,6 +222,11 @@ docker stop udacity-c2-restapi-feed_1
 docker rm -f udacity-c2-restapi-feed_1
 
 ```
+To stop all containers 
+```
+docker stop  $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+```
 ### Install minikube
 
 ```console 
