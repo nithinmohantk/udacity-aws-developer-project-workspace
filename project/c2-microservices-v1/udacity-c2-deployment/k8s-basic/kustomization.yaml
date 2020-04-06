@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - backend-feed-deployment.yaml
+  - backend-user-deployment.yaml
+  - frontend-deployment.yaml
+  - reverseproxy-deployment.yaml
+  - pod-example/pod.yaml
