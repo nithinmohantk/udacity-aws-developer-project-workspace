@@ -14,11 +14,12 @@ before_install:
   - sudo mv docker-compose /usr/local/bin 
   - docker-compose --version
   - pip install python --upgrade --user 
+  - pip install --upgrade pip
   #- curl -LO https://storage.googleapis.com/kubernetes-release/release/$
   - pip --version
   - python --version 
   - pip install awscli --upgrade --user 
-  - awscli --version
+  - awscli version
   # Install ekscli
   - curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
   - sudo mv /tmp/eksctl /usr/local/bin
