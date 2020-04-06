@@ -10,7 +10,7 @@ In Windows build command to create archive.zip will not work, as there is no 'zi
 2. src\tmp\dummy.ts - temporary workaround  to make the "tmp" folder copied to www folder, as npm build was failing due to lack of permission to execute 'mkdir www/tmp', as my working folder was in Windows Desktop, and lacks permission.
 3. **package.json** - modified npm commands to fit the needs. 
 4. **npm audit fix** && **package-lock.json** - to fix issues.
-5. **server.ts**  - implemented the following code and added console logging 
+5. **server.ts**  - implemented the following code and added console logging.
 
 ```javascript
 app.get('/filteredimage', 

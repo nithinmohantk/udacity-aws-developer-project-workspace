@@ -1,0 +1,237 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: backend-feed
+  name: backend-feed
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      service: backend-feed
+  template:
+    metadata:
+      labels:
+        service: backend-feed
+    spec:
+      containers:
+      - env:
+        - name: URL
+          valueFrom:
+            configMapKeyRef:
+              key: URL
+              name: env-config
+        - name: AWS_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_BUCKET
+              name: env-config
+        - name: AWS_PROFILE
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_PROFILE
+              name: env-config
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_REGION
+              name: env-config
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: JWT_SECRET
+              name: env-config
+        - name: POSTGRESS_DB
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRESS_DB
+              name: env-config
+        - name: POSTGRESS_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRESS_DATABASE
+              name: env-config
+        - name: POSTGRESS_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRESS_HOST
+              name: env-config
+        - name: POSTGRESS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRESS_PASSWORD
+              name: env-secret
+        - name: POSTGRESS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRESS_USERNAME
+              name: env-secret
+        image: thingxcloud/udacity-restapi-feed
+        imagePullPolicy: Always
+        name: backend-feed
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+        volumeMounts:
+        - mountPath: /root/.aws/
+          name: aws-secret
+          readOnly: true
+      restartPolicy: Always
+      volumes:
+      - name: aws-secret
+        secret:
+          secretName: aws-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: backend-user
+  name: backend-user
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      service: backend-user
+  template:
+    metadata:
+      labels:
+        service: backend-user
+    spec:
+      containers:
+      - env:
+        - name: URL
+          valueFrom:
+            configMapKeyRef:
+              key: URL
+              name: env-config
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: JWT_SECRET
+              name: env-config
+        - name: POSTGRESS_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRESS_DATABASE
+              name: env-config
+        - name: POSTGRESS_DB
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRESS_DB
+              name: env-config
+        - name: POSTGRESS_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRESS_HOST
+              name: env-config
+        - name: POSTGRESS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRESS_PASSWORD
+              name: env-secret
+        - name: POSTGRESS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRESS_USERNAME
+              name: env-secret
+        image: thingxcloud/udacity-restapi-user
+        imagePullPolicy: Always
+        name: backend-user
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: frontend
+  name: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      service: frontend
+  template:
+    metadata:
+      labels:
+        api: external
+        service: frontend
+    spec:
+      containers:
+      - image: thingxcloud/udacity-frontend:local
+        imagePullPolicy: Always
+        name: frontend
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: reverseproxy
+    version: v2
+  name: reverseproxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      service: reverseproxy
+  template:
+    metadata:
+      labels:
+        service: reverseproxy
+        version: v2
+    spec:
+      containers:
+      - image: thingxcloud/udacity-reverseproxy
+        imagePullPolicy: Always
+        name: reverseproxy
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 250m
+            memory: 64Mi
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-example
+spec:
+  containers:
+  - image: thingxcloud/udacity-reverseproxy
+    imagePullPolicy: Always
+    name: reverseproxy
+    ports:
+    - containerPort: 8080
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 250m
+        memory: 64Mi
+  restartPolicy: Always
