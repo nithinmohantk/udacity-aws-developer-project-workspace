@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: reverseproxy
+    app: reverseproxy
   name: reverseproxy
 spec:
   replicas: 2
@@ -12,19 +12,19 @@ spec:
   template:
     metadata:
       labels:
-        service: reverseproxy
+        app: reverseproxy
     spec:
       containers:
       - image: thingxcloud/udacity-reverseproxy
         name: reverseproxy
-        imagePullPolicy: Always          
+        imagePullPolicy: Always
         resources:
           requests:
             memory: "64Mi"
             cpu: "250m"
           limits:
             memory: "1024Mi"
-            cpu: "500m"       
+            cpu: "500m"
         ports:
         - containerPort: 8080
       restartPolicy: Always

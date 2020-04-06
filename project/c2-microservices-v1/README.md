@@ -117,14 +117,20 @@ Now, Navigate to the `udacity-c2-deployment/k8s-final` directory.
 eksctl create cluster --name udagram-micro
 ``` 
 2. Verify cluster is created 
-```
+```bash
 kubectl get nodes
 ```
 3. Deploy the Kubernetes application:
+```bash
+kubectl apply -f .   //if you are executing it within k8s-final folder 
+OR 
+kubectl apply -f udacity-c2-deployment/k8s-final // use it relatively from where you executing it
 ```
-kubectl apply -f udacity-c2-deployment/k8s-final
+4. Verify deployment 
 ```
-4. Debug Pods 
+kubectl get deployment
+```
+5. Debug Pods 
 ```
 kubectl get svc --all-namespaces
 //Get the pods running 
@@ -134,14 +140,15 @@ kubectl get services
 //expanded view 
 kubectl get pods -o wide
 ```
-5. Enable port forwarding for services to local port **reverseproxy**
+6. Enable port forwarding for services to local port **reverseproxy**
 ```
-kubectl port-forward pod/reverseproxy 8080:8080
-kubectl port-forward pod/frontend 8100:8100
+kubectl port-forward pod/reverseproxy 8080:8080 &
+kubectl port-forward pod/frontend 8100:8100 &
 ```
 - Verify the frontend in browser using: http://localhost:8100
 - Verify the API's via Postman using: http://localhost:8080/api/v0
-6. Delete AKS Cluster  - _essential to keep AWS cost minimal_
+
+7. Delete AKS Cluster  - _essential to keep AWS cost minimal_
 ```
 eksctl delete cluster --name udagram-micro
 ``` 
