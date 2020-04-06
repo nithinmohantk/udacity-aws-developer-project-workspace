@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: backend-user
+  name: backend-user
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: backend-user
+    spec:
+      containers:
+      - env:
+        - name: AWS_BUCKET
+          value: udagram-nithin-dev
+        - name: AWS_PROFILE
+          value: default
+        - name: AWS_REGION
+          value: eu-west-1
+        - name: JWT_SECRET
+          value: helloworld2
+        - name: POSTGRESS_DATABASE
+          value: demo3
+        - name: POSTGRESS_DB
+          value: demo3
+        - name: POSTGRESS_HOST
+          value: udagramruttnerdev.cjvxacioqbjy.eu-west-1.rds.amazonaws.com
+        - name: POSTGRESS_PASSWORD
+          value: Zigma123
+        - name: POSTGRESS_USERNAME
+          value: udagramadmin
+        - name: URL
+          value: http://localhost:8100
+        image: thingxcloud/udacity-restapi-user
+        name: backend-user
+        resources: {}
+        volumeMounts:
+        - mountPath: /root/.aws
+          name: backend-user-claim0
+      restartPolicy: Always
+      volumes:
+      - name: backend-user-claim0
+        persistentVolumeClaim:
+          claimName: backend-user-claim0
+status: {}
