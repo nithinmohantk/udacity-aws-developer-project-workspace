@@ -19,7 +19,9 @@ This repository contains my practical project works for **Udacity Cloud Develope
 
 - - Project 1: Static site_Upload_s3
 - - Project 2: Image-filter-service (Udagram API)
-- - Project 3: Microservices Udagram App
+- - Project 3: GitHub Profile 
+- - Project 4: Refactor Udagram app into Microservices and Deploy - _In this project, you will reuse their existing Udagram application and convert and extend into a microservice architecture._
+- - 
 
 ## Installation 
  The samples and projects found in this repository are created using Visual Studio Code and Node.js/NPM/ExpressJS stack and it require certain global NPM components and project NPM components(project.json). 
