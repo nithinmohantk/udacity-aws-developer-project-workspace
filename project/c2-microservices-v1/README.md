@@ -1,5 +1,13 @@
-## Udagram Micro-Services App
-A simple "Udagram" micro services application to demonstrate build, and deploy frondend/backend workloads in Docker/Kubernetes environment.
+[![Build Status](https://travis-ci.com/nithinmohantk/udacity-aws-developer-project-workspace.svg?branch=master)](https://travis-ci.com/nithinmohantk/udacity-aws-developer-project-workspace)
+
+## Udagram Microservices App
+A simple "Udagram" microservices application to demonstrate build, and deploy frondend/backend workloads in Docker/Kubernetes environment.
+
+The solution containts 4 services:
+- Frontend application (Udagram App)
+- Backend user service  - _provides **authN** and **authZ** services with integration with a shared datastore hosted in **RDS**_.
+- Backend feed service - _provides **image feed services** with integration with a shared datastore hosted with **RDS** and **S3 Bucket**._
+- Reverse Proxy (_**NGINX proxy**_).
 
 ## Runtime Stack
 - Docker for Windows/Mac - Install using Hyper-V/WSL and Register an Account with DockerHub

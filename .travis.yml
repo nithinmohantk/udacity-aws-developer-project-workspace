@@ -24,8 +24,9 @@ install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose -f project/c2-microservices-v1/udacity-c2-deployment/docker/docker-compose-build.yaml push
 
-deploy:
-  provider: script
-  script: bash ci-scripts/docker_push.sh
-  on:
-    branch: master
+#deploy:
+#  provider: script
+#  script: bash ci-scripts/docker_push.sh
+#  on:
+#    branch: master
+    
