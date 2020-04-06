@@ -13,8 +13,8 @@ before_install:
   - chmod +x docker-compose 
   - sudo mv docker-compose /usr/local/bin 
   - docker-compose --version
-  - pip install python --upgrade --user 
-  - pip install --upgrade pip
+  #- pip install python --upgrade --user 
+  #- pip install --upgrade pip
   #- curl -LO https://storage.googleapis.com/kubernetes-release/release/$
   - pip --version
   - python --version 
