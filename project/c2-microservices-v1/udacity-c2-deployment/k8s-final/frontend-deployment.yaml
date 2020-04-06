@@ -1,19 +1,22 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: frontend
+    app: frontend
   name: frontend
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
   template:
     metadata:
       labels:
-        service: frontend
+        app: frontend
         api: external        
     spec:
       containers:
-      - image: scheele/udacity-frontend:local
+      - image: thingxcloud/udacity-frontend:local
         name: frontend
         imagePullPolicy: Always          
         ports:

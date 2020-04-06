@@ -1,5 +1,5 @@
 ## Udagram Micro-Services App
-A simple "Udagram" micro services application to build, and deploy frondend/backend workloads in Docker/Kubernetes environment.
+A simple "Udagram" micro services application to demonstrate build, and deploy frondend/backend workloads in Docker/Kubernetes environment.
 
 ## Runtime Stack
 - Docker for Windows/Mac - Install using Hyper-V/WSL and Register an Account with DockerHub
@@ -9,12 +9,12 @@ A simple "Udagram" micro services application to build, and deploy frondend/back
 
 ### Prerequisite
 
-- Install Latest AWS CLI - 
+- Install Latest **AWS CLI** - 
   ```
   pip upgrade pip
   pip install awscli --upgrade --user
   ```
-- EKS - Install eksctl - command line utility For more information, see the https://eksctl.io/
+- Install **eksctl** - command line utility For more information, see the https://eksctl.io/
 ```
 chocolatey install -y eksctl aws-iam-authenticator
 eksctl version
@@ -28,7 +28,7 @@ AWS Secret Access Key [None]: wJalrXUtnFOUNDNEWEXAMPLE
 Default region name [None]: eu-west-1
 Default output format [None]: json
 ```
-- Install and Configure kubectl for Amazon EKS  - _Kubernetes uses the kubectl command-line utility for communicating with the cluster API server. _
+- Install and Configure **kubectl** for Amazon EKS  - _Kubernetes uses the kubectl command-line utility for communicating with the cluster API server. _
 
 Before we get started, confirm that you have installed NodeJs, npm and Ionic Framework by checking the versions:
 ```bash
@@ -36,65 +36,109 @@ node --version
 npm --version
 ionic --version
 ```
-
 If you get a `not found` message, install the required item:
 *   [Ionic CLI](https://ionicframework.com/docs/installation/cli) if you don't already have it installed
 *  [Nodejs and npm](https://nodejs.org/en/download/) 
 
-
 ## Instructions to Use
 To use the code base from this project:
 
-### To Use the Code
-Clone the [course repo](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace) and stay on the `master` branch.
+### How To Use the Code
+1. Clone the [course repo](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace) and stay on the `master` branch.
 
 ```bash
 git clone https://github.com/nithinmohantk/udacity-aws-developer-project-workspace
 cd udacity-aws-developer-project-workspace/project/c2-microservices-v2
 git branch
 ```
-Navigate to the `udacity-c2-deployment/k8s-final` directory.
+2. Update the following configuration files
+- [aws-secret.yaml](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/blob/master/project/c2-microservices-v1/udacity-c2-deployment/k8s-final/aws-secret.yaml)
+- [env-configmap.yaml](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/blob/master/project/c2-microservices-v1/udacity-c2-deployment/k8s-final/env-configmap.yaml)
+- [env-secret.yml](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace/blob/master/project/c2-microservices-v1/udacity-c2-deployment/k8s-final/env-secret.yaml)
 
-### Steps to Use
+3. Update the ~/.bash_profle with following variables and values 
+  - POSTGRESS_USERNAME 
+  - POSTGRESS_PASSWORD
+  - POSTGRESS_DB
+  - POSTGRESS_HOST
+  - AWS_REGION
+  - AWS_PROFILE
+  - AWS_BUCKET
+  - JWT_SECRET
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - URL: http://localhost:8100  
+
+### Steps to Run the application 
+Steps has been categorized in to three sections 
+- Deploy to Docker and verify the configuration
+- Publish Docker Images
+- Deploy to Kubernetes and verify the configuration
+
+#### Deploy to Docker and verify the configuration 
+At first, Navigate to the `udacity-c2-deployment/docker` directory.
 
 1. Build the docker images using docker-compose: 
 ```
 docker-compose -f docker-compose-build.yaml build --parallel
 ```
-2. Commit/Push the images to Docker Repository:
-```
-docker-compose -f docker-compose-build.yaml push
-```
-3. Deploy Docker containers 
+2. Deploy Docker containers 
 ```
 docker-compose up
 ```
-4. To Stop/Remove 
+Verify the frontend in browser using: http://localhost:8100
+Verify the API's via Postman using: http://localhost:8080/api/v0
+
+3. To Stop/Remove 
 ```
 docker-compose stop
 docker-compose down 
 ``` 
-5. Create an EKS Cluster 
+
+#### Publish Docker Images
+
+Publish the images to Docker Repository:
+```
+docker-compose -f docker-compose-build.yaml push
+```
+
+#### Deploy to Kubernetes and verify the configuration 
+Now, Navigate to the `udacity-c2-deployment/k8s-final` directory.
+1. Create an EKS Cluster 
 ``` 
 eksctl create cluster --name udagram-micro
 ``` 
-6. Deploy the Kubernetes application:
+2. Verify cluster is created 
 ```
-kubectl apply -f udacity-c3-deployment/k8s-final
+kubectl get nodes
 ```
-7. Debug Pods 
+3. Deploy the Kubernetes application:
+```
+kubectl apply -f udacity-c2-deployment/k8s-final
+```
+4. Debug Pods 
 ```
 kubectl get svc --all-namespaces
-kubectl get pods
+//Get the pods running 
+kubectl get pods     
+//Get the services running  
 kubectl get services
+//expanded view 
 kubectl get pods -o wide
 ```
-8. Delete AKS Cluster 
+5. Enable port forwarding for services to local port **reverseproxy**
+```
+kubectl port-forward pod/reverseproxy 8080:8080
+kubectl port-forward pod/frontend 8100:8100
+```
+- Verify the frontend in browser using: http://localhost:8100
+- Verify the API's via Postman using: http://localhost:8080/api/v0
+6. Delete AKS Cluster  - _essential to keep AWS cost minimal_
 ```
 eksctl delete cluster --name udagram-micro
 ``` 
 
-
+### Local Debugging Steps: 
 #### To Start the backend npm server
 We will start the backend first and the frontend later. Open a **new** terminal and navigate to the `/udacity-c2-restapi-feed/` or `/udacity-c2-restapi-user/` directory. 
 Use `npm` to install all dependencies as mentioned in the `package.json`:
@@ -105,7 +149,7 @@ npm run dev
 ```
 
 #### To Start the frontend server
-Next, open another terminal and navigate to the `/udacity-c3-frontend/` folder, and use `npm` to install all dependencies:
+Next, open another terminal and navigate to the `/udacity-c2-frontend/` folder, and use `npm` to install all dependencies:
 
 ```bash
 npm install
@@ -118,6 +162,7 @@ ionic serve
 A successful command would automatically start the services at `http://localhost:8100/home`. 
 
 ## Useful Commands 
+This section illustrates some of the samples I used as part of the exercise to gain more understanding on different tools and commands. 
 
 ### Useful docker-compose commands 
 

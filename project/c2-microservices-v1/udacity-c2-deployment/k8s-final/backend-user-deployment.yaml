@@ -1,18 +1,21 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: backend-user
+    app: backend-user
   name: backend-user
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: backend-user
   template:
     metadata:
       labels:
-        service: backend-user
+        app: backend-user
     spec:
       containers:
-      - image: scheele/udacity-restapi-user
+      - image: thingxcloud/udacity-restapi-user
         name: backend-user 
         imagePullPolicy: Always  
         resources:
@@ -38,6 +41,11 @@ spec:
             configMapKeyRef:
               name: env-config
               key: POSTGRESS_DB
+        - name: POSTGRESS_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: POSTGRESS_DATABASE
         - name: POSTGRESS_HOST
           valueFrom:
             configMapKeyRef:
