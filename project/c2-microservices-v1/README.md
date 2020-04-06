@@ -1,5 +1,5 @@
-## Lesson 1 - Best Practices for Micro-Services Development
-The exercises in this lesson are an extension of the exercises you have already done in the previous course - **"Full Stack Apps on AWS"**.  We will use the same "Udagram" project to perform the tasks as mentioned in the project instructions. 
+## Udagram Micro-Services App
+A simple "Udagram" micro services application to build, and deploy frondend/backend workloads in Docker/Kubernetes environment.
 
 ### Prerequisite
 Before we get started, confirm that you have installed NodeJs, npm and Ionic Framework by checking the versions:
