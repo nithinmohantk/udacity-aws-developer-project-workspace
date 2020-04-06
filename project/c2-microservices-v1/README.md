@@ -14,8 +14,8 @@ If you get a `not found` message, install the required item:
 *  [Nodejs and npm](https://nodejs.org/en/download/) 
 
 
-## Exercise Instructions
-Perform the following tasks in the sequence mentioned below:
+## Instructions to Use
+To use the code base from this project:
 
 ### To Use the Code
 Clone the [course repo](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace) and stay on the `master` branch.
