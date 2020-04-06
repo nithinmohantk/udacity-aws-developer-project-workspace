@@ -17,67 +17,29 @@ If you get a `not found` message, install the required item:
 ## Exercise Instructions
 Perform the following tasks in the sequence mentioned below:
 
-### Task 1 - Clone the project GitHub repository 
-Clone the [course repo](https://github.com/scheeles/cloud-developer) and stay on the `master` branch.
+### To Use the Code
+Clone the [course repo](https://github.com/nithinmohantk/udacity-aws-developer-project-workspace) and stay on the `master` branch.
 
 ```bash
-git clone https://github.com/udacity/nd9990-c3-microservices-v1
-cd nd9990-c3-microservices-v1/
+git clone https://github.com/nithinmohantk/udacity-aws-developer-project-workspace
+cd udacity-aws-developer-project-workspace/project/c2-microservices-v2
 git branch
 ```
-Navigate to the `/lesson-1-Best-Practices/exercises/` directory.
+Navigate to the `udacity-c2-deployment/k8s-final` directory.
+
+### Steps to Deploy 
 
 
-#### Task 2 - Set the User-specific environment variables
-For this server to work you'll need to access the AWS RDS database and S3 bucket that you set up in the Full  Stack App on AWS Course.  Make sure that the RDS instance is running and that you have defined all of the environment variables in your `./profile` file that is called in the `config.ts`:
-```bash
-POSTGRESS_USERNAME
-POSTGRESS_PASSWORD
-POSTGRESS_DB
-POSTGRESS_HOST
-AWS_REGION
-AWS_PROFILE
-AWS_BUCKET
-JWT_SECRET
-```
-
-If you need a refresher on how to do this, see the [Handling Secrets with Environment Variables lesson](https://classroom.udacity.com/nanodegrees/nd9990/parts/5d4b2317-8333-47b3-a9ec-ea2cf0a3efbb/modules/ab95831d-3105-400e-9c49-01a9d85e5a65/lessons/9bab122b-1f83-461f-b4dc-f167ab2e9072/concepts/5e27708d-263c-422d-bc56-d4b867691b56 ). 
-
-##### Steps to store the environment variables in `.profile` file
-Create (if not exists) a `.profile` file in `~` or `$HOME` directory to contain the user-specific variables. Follow the below steps: 
-* In the `~` directory, run `echo $PATH`. Copy the output.
-* Create a new `.profile` file using `touch .profile`. 
-* Open it up for editing using any editor. Add the copied $PATH variable value, for example:
-```bash
-export PATH=$PATH:/usr/local/mysql/bin/
-```
-* Add the value for other variables specific for you:
-```bash
-export POSTGRESS_USERNAME=myusername;
-export POSTGRESS_PASSWORD=mypassword;
-export POSTGRESS_DB=postgres;
-export POSTGRESS_HOST=udagramdemo.abc4def.us-east-2.rds.amazonaws.com;
-export AWS_REGION=us-east-2;
-export AWS_PROFILE=default;
-export AWS_BUCKET=udagramdemo;
-export JWT_SECRET=helloworld;
-```
-**Change the values of the above mentioned variables as applicable for you**. 
-
-
-
-#### More about the Backend Endpoint
-Ionic uses enviornment files located in `./src/enviornments/enviornment.*.ts` to load configuration variables at runtime. By default `environment.ts` is used for development and `enviornment.prod.ts` is used for produciton. The `apiHost` variable should be set to your server url either locally or in the cloud.
-
-#### Task 3 - Start the backend npm server
-We will start the backend first and the frontend later. Open a **new** terminal and navigate to the `/udacity-c3-restapi/` directory. Use `npm` to install all dependencies as mentioned in the `package.json`:
+#### To Start the backend npm server
+We will start the backend first and the frontend later. Open a **new** terminal and navigate to the `/udacity-c2-restapi-feed/` or `/udacity-c2-restapi-user/` directory. 
+Use `npm` to install all dependencies as mentioned in the `package.json`:
 ```bash
 npm install
 source ~/.profile
 npm run dev
 ```
 
-#### Task 4 - Start the frontend server
+#### To Start the frontend server
 Next, open another terminal and navigate to the `/udacity-c3-frontend/` folder, and use `npm` to install all dependencies:
 
 ```bash
