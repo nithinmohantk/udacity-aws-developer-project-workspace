@@ -142,8 +142,8 @@ kubectl get pods -o wide
 ```
 6. Enable port forwarding for services to local port **reverseproxy**
 ```
-kubectl port-forward pod/reverseproxy 8080:8080 &
-kubectl port-forward pod/frontend 8100:8100 &
+kubectl port-forward service/frontend 8100:8100 &
+kubectl port-forward service/reverseproxy 8080:8080 &
 ```
 - Verify the frontend in browser using: http://localhost:8100
 - Verify the API's via Postman using: http://localhost:8080/api/v0
