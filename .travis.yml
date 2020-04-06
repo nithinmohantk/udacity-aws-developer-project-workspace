@@ -14,7 +14,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin 
   - docker-compose --version
   #- curl -LO https://storage.googleapis.com/kubernetes-release/release/$
-  - pip3 --version
+  - pip --version
   - python --version 
   - pip install awscli --upgrade --user 
   # Install ekscli
