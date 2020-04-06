@@ -23,4 +23,8 @@ docker images
 docker image rm -f <image_name/ID>
 docker image prune
 
-```
+
+
+
+
+

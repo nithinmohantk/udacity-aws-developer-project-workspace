@@ -1,11 +1,35 @@
 ## Udagram Micro-Services App
 A simple "Udagram" micro services application to build, and deploy frondend/backend workloads in Docker/Kubernetes environment.
 
-## Technology Stack
+## Runtime Stack
 - Docker for Windows/Mac - Install using Hyper-V/WSL and Register an Account with DockerHub
-- Kubernetes(K8s) - Install Minikube on Windows 10 or Setup AWS EKS instance 
+- Kubernetes(K8s) - Install Minikube on Windows 10 or Setup AWS EKS instance. Either way Kubenetes require kubectl commandline tool.  
+- AWS ECS: Install AWS CLI, EKS CLI
+- API Runtime: Node.JS, npm, @ionic/cli
 
 ### Prerequisite
+
+- Install Latest AWS CLI - 
+  ```
+  pip upgrade pip
+  pip install awscli --upgrade --user
+  ```
+- EKS - Install eksctl - command line utility For more information, see the https://eksctl.io/
+```
+chocolatey install -y eksctl aws-iam-authenticator
+eksctl version
+```
+
+- Configure Your AWS CLI Credentials
+```
+$ aws configure
+AWS Access Key ID [None]: AKIAIFOUNDNEWEXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFOUNDNEWEXAMPLE
+Default region name [None]: eu-west-1
+Default output format [None]: json
+```
+- Install and Configure kubectl for Amazon EKS  - _Kubernetes uses the kubectl command-line utility for communicating with the cluster API server. _
+
 Before we get started, confirm that you have installed NodeJs, npm and Ionic Framework by checking the versions:
 ```bash
 node --version
@@ -31,7 +55,44 @@ git branch
 ```
 Navigate to the `udacity-c2-deployment/k8s-final` directory.
 
-### Steps to Deploy 
+### Steps to Use
+
+1. Build the docker images using docker-compose: 
+```
+docker-compose -f docker-compose-build.yaml build --parallel
+```
+2. Commit/Push the images to Docker Repository:
+```
+docker-compose -f docker-compose-build.yaml push
+```
+3. Deploy Docker containers 
+```
+docker-compose up
+```
+4. To Stop/Remove 
+```
+docker-compose stop
+docker-compose down 
+``` 
+5. Create an EKS Cluster 
+``` 
+eksctl create cluster --name udagram-micro
+``` 
+6. Deploy the Kubernetes application:
+```
+kubectl apply -f udacity-c3-deployment/k8s-final
+```
+7. Debug Pods 
+```
+kubectl get svc --all-namespaces
+kubectl get pods
+kubectl get services
+kubectl get pods -o wide
+```
+8. Delete AKS Cluster 
+```
+eksctl delete cluster --name udagram-micro
+``` 
 
 
 #### To Start the backend npm server
@@ -137,7 +198,7 @@ kubectl get pods
 ```
 
 
-### Setting up EKS Cluster 
+### Setting up EKS Cluster using KOPS
 
 We are going to use Kubernetes Operations Service(KOPS) to provision a Kubernetes Cluster in EKS 
 ```console
