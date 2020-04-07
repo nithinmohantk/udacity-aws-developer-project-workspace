@@ -201,18 +201,7 @@ docker-compose up -d --force-recreate --build
 docker-compose -f docker-compose.yml up
 ```
 
-```console
-Options:
-  -d                  Detached mode: Run containers in the background,
-                      print new container names. Incompatible with
-                      --abort-on-container-exit.
-  --force-recreate    Recreate containers even if their configuration
-                      and image haven't changed.
-  --build             Build images before starting containers.
-```
-
-
- ```console 
+```console 
 docker-compose restart 
 ```
 ### Stop and Remove Container(s)
