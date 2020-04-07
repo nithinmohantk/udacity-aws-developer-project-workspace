@@ -40,7 +40,5 @@ services:
       URL: "http://localhost:8100"
   frontend:
     image: thingxcloud/udacity-frontend:local
-    volumes:
-      - $HOME/.aws:/root/.aws
     ports:
       - "8100:80"
