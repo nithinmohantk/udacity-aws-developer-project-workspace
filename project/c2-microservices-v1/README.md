@@ -150,6 +150,8 @@ kubectl port-forward service/reverseproxy 8080:8080 &
 
 7. Delete AKS Cluster  - _essential to keep AWS cost minimal_
 ```
+kubectl delete deployment --all
+kubectl delete svc --all
 eksctl delete cluster --name udagram-micro
 ``` 
 
