@@ -1,0 +1,18 @@
+version: "3"
+services:
+  reverseproxy:
+    build:
+      context: .
+    image: thingxcloud/udacity-reverseproxy 
+  backend_user:
+    build:
+      context: ../../udacity-c2-restapi-user
+    image: thingxcloud/udacity-restapi-user
+  backend_feed:
+    build:
+      context: ../../udacity-c2-restapi-feed  
+    image: thingxcloud/udacity-restapi-feed
+  frontend:
+    build:
+      context: ../../udacity-c2-frontend  
+    image: thingxcloud/udacity-frontend:local

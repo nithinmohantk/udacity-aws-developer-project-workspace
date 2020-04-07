@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  AWS_BUCKET: udagram-nithin-dev
+  AWS_PROFILE: default
+  AWS_REGION: eu-west-1
+  JWT_SECRET: helloworld2
+  POSTGRESS_DB: demo3
+  POSTGRESS_DATABASE: demo3
+  POSTGRESS_HOST: udagramnithindev.cjvxacioqbjy.eu-west-1.rds.amazonaws.com
+  URL: http://localhost:8100  
+metadata:
+  name: env-config
+  
