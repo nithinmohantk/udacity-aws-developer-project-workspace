@@ -287,3 +287,12 @@ ssh -i ~/.ssh/id_rsa admin@api.thingxcloud.k8s.local
 # To manually create a route53 DNS 
 aws route53 create-hosted-zone --name thingxcloud.k8s.local --caller-reference 1.
 
+```
+### References 
+- My previous examples: https://github.com/nithinmohantk/Docker-DotNetCore-WebApp/tree/master/src/ContosoCorp 
+- Travis CI - https://docs.travis-ci.com/user/build-stages/share-docker-image/ 
+https://docs.travis-ci.com/user/tutorial/
+- Online Base64  Converter - http://www.utilities-online.info/base64
+- [Install the AWS CLI version 1 on Linux](https://docs.aws.amazon.com/cli/latest/userguide/install-linux.html)
+- [Getting Started with eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
+- [Pushing Docker images to a private registry with Docker Compose](https://medium.com/@stoyanov.veseline/pushing-docker-images-to-a-private-registry-with-docker-compose-d2797097751)
