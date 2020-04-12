@@ -3,7 +3,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } f
 import { generateUploadUrl } from '../../bll/todos';
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const signedUrl = generateUploadUrl(event);
+  const signedUrl = await generateUploadUrl(event);
 
   return {
     statusCode: 202,

@@ -7,12 +7,13 @@ import TodosStorage from '../dal/todosStorage';
 import { TodoItem } from '../models/TodoItem';
 import { CreateTodoRequest } from '../requests/CreateTodoRequest';
 import { UpdateTodoRequest } from '../requests/UpdateTodoRequest';
-
+import { createLogger } from '../utils/logger'
 const todosAccess = new TodosAccess();
 const todosStorage = new TodosStorage();
+const logger = createLogger('todos')
 /**
  *
- *
+ * Create a todolist item 
  * @export
  * @param {APIGatewayProxyEvent} event
  * @param {CreateTodoRequest} createTodoRequest
@@ -29,16 +30,17 @@ export async function createTodo(event: APIGatewayProxyEvent,
         todoId,
         createdAt,
         done: false,
-        attachmentUrl: `https://${todosStorage.getBucketName()}.s3.amazonaws.com/${todoId}`,
+        attachmentUrl: `https://${todosStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/${todoId}`,
         ...createTodoRequest
     };
 
+    logger.info('Storing new item: ' + JSON.stringify(todoItem));
     await todosAccess.addTodoToDB(todoItem);
 
     return todoItem;
 }
 /**
- *
+ * Delete a todo list item from database
  *
  * @export
  * @param {APIGatewayProxyEvent} event
@@ -57,7 +59,7 @@ export async function deleteTodo(event: APIGatewayProxyEvent) {
     return true;
 }
 /**
- *
+ * get a Todo list item from database.
  *
  * @export
  * @param {APIGatewayProxyEvent} event
@@ -70,7 +72,7 @@ export async function getTodo(event: APIGatewayProxyEvent) {
     return await todosAccess.getTodoFromDB(todoId, userId);
 }
 /**
- *
+ * get ToDo list from database 
  *
  * @export
  * @param {APIGatewayProxyEvent} event
@@ -82,7 +84,7 @@ export async function getTodos(event: APIGatewayProxyEvent) {
     return await todosAccess.getAllTodosFromDB(userId);
 }
 /**
- *
+ *  update ToDo list to database 
  *
  * @export
  * @param {APIGatewayProxyEvent} event
@@ -111,7 +113,7 @@ export async function updateTodo(event: APIGatewayProxyEvent,
  */
 export async function generateUploadUrl(event: APIGatewayProxyEvent) {
     const bucket = todosStorage.getBucketName();
-    const urlExpiration = process.env.AWS_S3_SIGNED_URL_EXPIRATION;
+    const urlExpiration = +process.env.AWS_S3_SIGNED_URL_EXPIRATION;
     const todoId = event.pathParameters.todoId;
 
     const CreateSignedUrlRequest = {
@@ -120,5 +122,9 @@ export async function generateUploadUrl(event: APIGatewayProxyEvent) {
         Expires: urlExpiration
     }
 
-    return todosStorage.getPresignedUploadURL(CreateSignedUrlRequest);
+    var result = await todosStorage.getPresignedUploadURL(CreateSignedUrlRequest);
+
+    logger.info("todosStorage.getPresignedUploadURL", result);
+    return result;
 }
+  

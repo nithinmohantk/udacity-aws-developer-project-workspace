@@ -1,13 +1,20 @@
 import { CreateSignedUrlRequest } from '../requests/CreateSignedUrlRequest';
 import * as AWS from 'aws-sdk';
 import * as AWSXRay from 'aws-xray-sdk';
-
+import { createLogger } from '../utils/logger'
 const XAWS = AWSXRay.captureAWS(AWS);
+
+const s3 = new XAWS.S3({
+    signatureVersion: 'v4'
+  })
+const todosStorage = process.env.AWS_BUCKET;
+
+
+const logger = createLogger('TodosStorage')
 //env: process.env.AWS_BUCKET
 export default class TodosStorage {
     constructor(
-        private readonly todosStorage = process.env.AWS_BUCKET,
-        private readonly s3 = new XAWS.S3({ signatureVersion: 'v4' })
+    
     ) { }
     /**
      *To get the storage bucket name
@@ -16,7 +23,7 @@ export default class TodosStorage {
      * @memberof TodosStorage
      */
     getBucketName() {
-        return this.todosStorage;
+        return todosStorage;
     }
     /**
      * Ge the item using Signed Url 
@@ -25,7 +32,30 @@ export default class TodosStorage {
      * @returns
      * @memberof TodosStorage
      */
-    getPresignedUploadURL(CreateSignedUrlRequest: CreateSignedUrlRequest) {
-        return this.s3.getSignedUrl('putObject', CreateSignedUrlRequest);
+    async getPresignedUploadURL(createSignedUrlRequest: CreateSignedUrlRequest) {
+        logger.info('getPresignedUploadURL', {
+            // Additional information stored with a log statement
+            requestData: createSignedUrlRequest
+          });
+        
+        /*return s3.getSignedUrl('putObject', 
+           {
+            Bucket: createSignedUrlRequest.Bucket,
+            Key: createSignedUrlRequest.Key,
+            Expires: createSignedUrlRequest.Expires
+          }); */
+          const signedUrl = await  this.getSignedUrl(createSignedUrlRequest);
+          return signedUrl;
+    }
+
+
+    async getSignedUrl(createSignedUrlRequest: CreateSignedUrlRequest){
+        return new Promise((resolve,reject) => {
+          let params = { Bucket: createSignedUrlRequest.Bucket, Key: createSignedUrlRequest.Key, Expires: createSignedUrlRequest.Expires };
+          s3.getSignedUrl('getObject', params, (err, url) => {
+            if (err) reject(err)
+            resolve(url);
+          })
+        })
     }
 }

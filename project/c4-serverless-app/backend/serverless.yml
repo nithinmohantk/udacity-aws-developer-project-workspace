@@ -1,3 +1,5 @@
+org: nithinmohantk1
+app: serverless-todo-app01-app
 service:
   name: serverless-todo-app01
 
@@ -6,6 +8,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-plugin-tracing
 
 provider:
   name: aws
@@ -13,20 +16,50 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-west-1'}
-
+# disabled tracing due to - The provided execution role does not have permissions to call PutTraceSegments on XRAY
+# even after setting permissions in IAM
+  tracing:
+    lambda: true
+    apiGateway: true
+  
   environment:
     AWS_DB_APP_TABLE: serverless-todos-table-prod-${self:provider.stage}
     AWS_DB_INDEX_NAME: UserIdIndex
-    AWS_BUCKET: serverless-deploy-todo--${self:provider.stage}
-    SIGNED_URL_EXPIRATION: 300
-
+    AWS_BUCKET: serverless-deploy-todo-${self:provider.stage}
+    AWS_S3_SIGNED_URL_EXPIRATION: 86400
+ 
+ # Global roles/permissions 
+  iamRoleStatements:
+    - Effect: "Allow" # xray permissions (required)
+      Action:
+        - "xray:PutTraceSegments"
+        - "xray:PutTelemetryRecords"
+      Resource:
+        - "*"
+    - Effect: Allow
+      Action:
+        - codedeploy:*
+      Resource:
+        - '*'
+    
 custom:
+
+  serverless-offline:
+    port: 3003
+
   dynamodb:
     start:
       migrate: true
       inMemory: true
     stages:
       - dev
+
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Udagram API
+        description: Serverless API application for udagram frontend
 
 functions:
 
@@ -45,7 +78,13 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}/index/${self:provider.environment.AWS_DB_INDEX_NAME}
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}/*
 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
@@ -108,21 +147,25 @@ functions:
 
 resources:
   Resources:
-    RestApi:
+    ApiGatewayRestApi:
       Type: AWS::ApiGateway::RestApi
       Properties:
         Name: ApiGatewayRestApi
     # API Gateway
     GatewayResponseDefault4XX:
       Type: AWS::ApiGateway::GatewayResponse
+      DependsOn: ApiGatewayRestApi
       Properties:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+#          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+#          gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,PUT,DELETE,PATCH'"
         ResponseType: DEFAULT_4XX
-        RestApiId: !Ref ApiGatewayRestApi
-        StatusCode: '404'
+        RestApiId: 
+          !Ref ApiGatewayRestApi
+        #StatusCode: '404'
 
     # DynamoDB
     TodoTable:
@@ -187,4 +230,9 @@ resources:
                 - s3:GetObject
                 - s3:PutObject
               Resource: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}/*
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.AWS_BUCKET}/*'
         Bucket: !Ref DeployS3Bucket

@@ -1,5 +1,5 @@
 export interface CreateSignedUrlRequest {
     Bucket: string,
     Key: string,
-    Expires: string
+    Expires: number
 }

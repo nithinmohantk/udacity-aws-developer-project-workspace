@@ -6,7 +6,7 @@ import { createTodo } from '../../bll/todos';
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const newTodo: CreateTodoRequest = JSON.parse(event.body);
 
-  // make sure todoItem name is not empty
+  // todoItem cannot  is not empty
   if (!newTodo.name) {
     return {
       statusCode: 400,
