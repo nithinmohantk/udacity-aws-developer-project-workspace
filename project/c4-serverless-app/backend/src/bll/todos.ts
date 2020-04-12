@@ -13,7 +13,7 @@ const todosStorage = new TodosStorage();
 const logger = createLogger('todos')
 /**
  *
- * Create a todolist item 
+ * Create a todolist item
  * @export
  * @param {APIGatewayProxyEvent} event
  * @param {CreateTodoRequest} createTodoRequest
@@ -30,7 +30,7 @@ export async function createTodo(event: APIGatewayProxyEvent,
         todoId,
         createdAt,
         done: false,
-        attachmentUrl: `https://${todosStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/images/${todoId}.png`,
+        //attachmentUrl: `https://${todosStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/images/${todoId}.png`,
         ...createTodoRequest
     };
 
@@ -72,7 +72,7 @@ export async function getTodo(event: APIGatewayProxyEvent) {
     return await todosAccess.getTodoFromDB(todoId, userId);
 }
 /**
- * get ToDo list from database 
+ * get ToDo list from database
  *
  * @export
  * @param {APIGatewayProxyEvent} event
@@ -84,7 +84,7 @@ export async function getTodos(event: APIGatewayProxyEvent) {
     return await todosAccess.getAllTodosFromDB(userId);
 }
 /**
- *  update ToDo list to database 
+ *  update ToDo list to database
  *
  * @export
  * @param {APIGatewayProxyEvent} event
@@ -99,7 +99,6 @@ export async function updateTodo(event: APIGatewayProxyEvent,
     if (!(await todosAccess.getTodoFromDB(todoId, userId))) {
         return false;
     }
-
     await todosAccess.updateTodoInDB(todoId, userId, updateTodoRequest);
 
     return true;
@@ -115,6 +114,9 @@ export async function generateUploadUrl(event: APIGatewayProxyEvent) {
     const bucket = todosStorage.getBucketName();
     const urlExpiration = +process.env.AWS_S3_SIGNED_URL_EXPIRATION;
     const todoId = event.pathParameters.todoId;
+    const userId = getUserId(event);
+
+    const attachmentUrl = `https://${todosStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/images/${todoId}.png`;
 
     const CreateSignedUrlRequest = {
         Bucket: bucket,
@@ -123,8 +125,14 @@ export async function generateUploadUrl(event: APIGatewayProxyEvent) {
     }
 
     var result = await todosStorage.getPresignedUploadURL(CreateSignedUrlRequest);
-
     logger.info("todosStorage.getPresignedUploadURL", result);
-    return result;
+
+    //update attachment Info to DB.
+    if (!(await todosAccess.getTodoFromDB(todoId, userId))) {
+      return false;
+    }
+    logger.info(`{todoId} :: {userId} :: {attachmentUrl}`);
+    await todosAccess.updateAttachmentInDB(todoId, userId, attachmentUrl);
+
+  return result;
 }
-  

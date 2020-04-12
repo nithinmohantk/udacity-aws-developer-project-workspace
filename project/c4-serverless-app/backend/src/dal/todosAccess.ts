@@ -106,4 +106,29 @@ export default class TodosAccess {
             }
         }).promise();
     }
+
+  /**
+   *
+   *
+   * @param {*} todoId
+   * @param {*} userId
+   * @param {*} attachmentUrl
+   * @memberof TodosAccess
+   */
+  async updateAttachmentInDB(todoId, userId, attachmentUrl) {
+    await this.docClient.update({
+      TableName: this.todosTable,
+      Key: {
+        todoId,
+        userId
+      },
+      UpdateExpression: 'set #attachmentUrl = :a',
+      ExpressionAttributeValues: {
+        ':a': attachmentUrl
+      },
+      ExpressionAttributeNames: {
+        '#attachmentUrl': 'attachmentUrl'
+      }
+    }).promise();
+  }
 }

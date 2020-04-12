@@ -5,6 +5,7 @@ service:
 
 plugins:
   - serverless-webpack
+  - serverless-reqvalidator-plugin
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-offline
@@ -21,14 +22,14 @@ provider:
   tracing:
     lambda: true
     apiGateway: true
-  
+
   environment:
     AWS_DB_APP_TABLE: serverless-todos-table-prod-${self:provider.stage}
     AWS_DB_INDEX_NAME: UserIdIndex
     AWS_BUCKET: serverless-deploy-todo-${self:provider.stage}
     AWS_S3_SIGNED_URL_EXPIRATION: 86400
- 
- # Global roles/permissions 
+
+ # Global roles/permissions
   iamRoleStatements:
     - Effect: "Allow" # xray permissions (required)
       Action:
@@ -79,6 +80,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -94,6 +96,7 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -108,6 +111,7 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -123,6 +127,7 @@ functions:
           path: todos/{todoId}
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -138,12 +143,18 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
     iamRoleStatements:
       - Effect: Allow
         Action:
           - s3:PutObject
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
 
 resources:
   Resources:
@@ -163,7 +174,7 @@ resources:
           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
           gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,PUT,DELETE,PATCH'"
         ResponseType: DEFAULT_4XX
-        RestApiId: 
+        RestApiId:
           !Ref ApiGatewayRestApi
         #StatusCode: '404'
 
@@ -194,7 +205,14 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
-
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
     # S3 Bucket
     DeployS3Bucket:
       Type: AWS::S3::Bucket
@@ -225,7 +243,7 @@ resources:
           Statement:
             - Sid: PublicReadWriteBucketPolicy
               Effect: Allow
-              Principal: '*' 
+              Principal: '*'
               Action:
                 - s3:GetObject
                 - s3:PutObject
