@@ -30,7 +30,7 @@ export async function createTodo(event: APIGatewayProxyEvent,
         todoId,
         createdAt,
         done: false,
-        attachmentUrl: `https://${todosStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/${todoId}`,
+        attachmentUrl: `https://${todosStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/images/${todoId}.png`,
         ...createTodoRequest
     };
 
@@ -118,7 +118,7 @@ export async function generateUploadUrl(event: APIGatewayProxyEvent) {
 
     const CreateSignedUrlRequest = {
         Bucket: bucket,
-        Key: todoId,
+        Key: `images/${todoId}.png`,
         Expires: urlExpiration
     }
 

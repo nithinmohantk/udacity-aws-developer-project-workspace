@@ -41,7 +41,12 @@ provider:
         - codedeploy:*
       Resource:
         - '*'
-    
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}/*
+
 custom:
 
   serverless-offline:
@@ -80,11 +85,6 @@ functions:
           - dynamodb:Query
           - dynamodb:Scan
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}/index/${self:provider.environment.AWS_DB_INDEX_NAME}
-      - Effect: Allow
-        Action:
-          - s3:PutObject
-          - s3:GetObject
-        Resource: arn:aws:s3:::${self:provider.environment.AWS_BUCKET}/*
 
   CreateTodo:
     handler: src/lambda/http/createTodo.handler
