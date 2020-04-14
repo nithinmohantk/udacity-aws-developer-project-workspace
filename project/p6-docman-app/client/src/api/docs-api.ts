@@ -7,7 +7,7 @@ import { UpdateDocRequest } from '../types/UpdateDocRequest';
 export async function getDocs(idToken: string): Promise<Doc[]> {
   console.log('Fetching Docs')
 
-  const response = await Axios.get(`${apiEndpoint}/Docs`, {
+  const response = await Axios.get(`${apiEndpoint}/docs`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -21,7 +21,7 @@ export async function createDoc(
   idToken: string,
   newDoc: CreateDocRequest
 ): Promise<Doc> {
-  const response = await Axios.post(`${apiEndpoint}/Docs`,  JSON.stringify(newDoc), {
+  const response = await Axios.post(`${apiEndpoint}/docs`,  JSON.stringify(newDoc), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -35,7 +35,7 @@ export async function patchDoc(
   docId: string,
   updatedDoc: UpdateDocRequest
 ): Promise<void> {
-  await Axios.patch(`${apiEndpoint}/Docs/${docId}`, JSON.stringify(updatedDoc), {
+  await Axios.patch(`${apiEndpoint}/docs/${docId}`, JSON.stringify(updatedDoc), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -47,7 +47,7 @@ export async function deleteDoc(
   idToken: string,
   docId: string
 ): Promise<void> {
-  await Axios.delete(`${apiEndpoint}/Docs/${docId}`, {
+  await Axios.delete(`${apiEndpoint}/docs/${docId}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -59,7 +59,7 @@ export async function getUploadUrl(
   idToken: string,
   docId: string
 ): Promise<string> {
-  const response = await Axios.post(`${apiEndpoint}/Docs/${docId}/attachment`, '', {
+  const response = await Axios.post(`${apiEndpoint}/docs/${docId}/attachment`, '', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
