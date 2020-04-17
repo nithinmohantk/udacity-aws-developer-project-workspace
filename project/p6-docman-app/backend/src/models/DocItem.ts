@@ -4,8 +4,9 @@ export interface DocItem {
   createdAt: string
   updatedAt: string
   name: string
-  type: string
+  type?: string
   status: string, //Draft, first version, 
   version: string,
   attachmentUrl?: string,
+  done?: boolean
 }

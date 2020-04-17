@@ -103,7 +103,7 @@ export class Docs extends React.PureComponent<DocsProps, DocsState> {
   render() {
     return (
       <div>
-        <Header as="h1">Docs</Header>
+        <Header as="h1">Document Manager</Header>
 
         {this.renderCreateDocInput()}
 
@@ -136,16 +136,26 @@ export class Docs extends React.PureComponent<DocsProps, DocsState> {
       </Grid.Row>
     )
   }
-
-  renderDocs() {
+/**
+ *
+ *
+ * @returns
+ * @memberof Docs
+ */
+renderDocs() {
     if (this.state.loadingDocs) {
       return this.renderLoading()
     }
 
     return this.renderDocsList()
   }
-
-  renderLoading() {
+/**
+ *
+ *
+ * @returns
+ * @memberof Docs
+ */
+renderLoading() {
     return (
       <Grid.Row>
         <Loader indeterminate active inline="centered">
@@ -154,8 +164,13 @@ export class Docs extends React.PureComponent<DocsProps, DocsState> {
       </Grid.Row>
     )
   }
-
-  renderDocsList() {
+/**
+ *
+ *
+ * @returns
+ * @memberof Docs
+ */
+renderDocsList() {
     return (
       <Grid padded>
         {this.state.Docs.map((Doc, pos) => {
@@ -192,7 +207,7 @@ export class Docs extends React.PureComponent<DocsProps, DocsState> {
                 </Button>
               </Grid.Column>
               {Doc.attachmentUrl && (
-                <Image src={Doc.attachmentUrl} size="small" wrapped />
+                <a href={Doc.attachmentUrl}  target="_blank" title={Doc.name}>View</a>
               )}
               <Grid.Column width={16}>
                 <Divider />

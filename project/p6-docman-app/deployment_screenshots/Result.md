@@ -1,41 +1,48 @@
 ```console
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - UpdateDocLambdaVersionDfAFLPLvCPiFTMjpyqeLH4ShaWWbTv7fxU76KJZ3c
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - DeleteDocLambdaVersionMu70zs788HztO8H98VweGo4CLTCWYIVb1KS2UDfqBI
+CloudFormation - DELETE_SKIPPED - AWS::Lambda::Version - GetDocsLambdaVersioneQnJwZ6Oz4nHjO4h51fyK0ImaAybij6AejChLDL3iBE
+CloudFormation - DELETE_COMPLETE - AWS::ApiGateway::Deployment - ApiGatewayDeployment1587124943094
+CloudFormation - UPDATE_COMPLETE - AWS::CloudFormation::Stack - docman-backend-stack
 Serverless: Stack update finished...
 Service Information
-service: serverless-Doc-app01
+service: docman-backend
 stage: dev
 region: eu-west-1
-stack: serverless-Doc-app01-dev
-resources: 62
+stack: docman-backend-stack
+resources: 70
 api keys:
   None
 endpoints:
-  GET - https://ve1l7uy6kj.execute-api.eu-west-1.amazonaws.com/dev/Docs
-  POST - https://ve1l7uy6kj.execute-api.eu-west-1.amazonaws.com/dev/Docs
-  PATCH - https://ve1l7uy6kj.execute-api.eu-west-1.amazonaws.com/dev/Docs/{docId}
-  DELETE - https://ve1l7uy6kj.execute-api.eu-west-1.amazonaws.com/dev/Docs/{docId}
-  POST - https://ve1l7uy6kj.execute-api.eu-west-1.amazonaws.com/dev/Docs/{docId}/attachment
+  GET - https://8xhrfua85i.execute-api.eu-west-1.amazonaws.com/dev/docs
+  POST - https://8xhrfua85i.execute-api.eu-west-1.amazonaws.com/dev/docs
+  PATCH - https://8xhrfua85i.execute-api.eu-west-1.amazonaws.com/dev/docs/{docId}
+  DELETE - https://8xhrfua85i.execute-api.eu-west-1.amazonaws.com/dev/docs/{docId}
+  POST - https://8xhrfua85i.execute-api.eu-west-1.amazonaws.com/dev/docs/{docId}/attachment
+  PATCH - https://8xhrfua85i.execute-api.eu-west-1.amazonaws.com/dev/docs/{docId}/attachment
 functions:
-  Auth: serverless-Doc-app01-dev-Auth
-  GetTodos: serverless-Doc-app01-dev-GetTodos
-  CreateTodo: serverless-Doc-app01-dev-CreateTodo
-  UpdateTodo: serverless-Doc-app01-dev-UpdateTodo
-  DeleteTodo: serverless-Doc-app01-dev-DeleteTodo
-  GenerateUploadUrl: serverless-Doc-app01-dev-GenerateUploadUrl
+  Auth: docman-backend-dev-Auth
+  GetDocs: docman-backend-dev-GetDocs
+  CreateDoc: docman-backend-dev-CreateDoc
+  UpdateDoc: docman-backend-dev-UpdateDoc
+  DeleteDoc: docman-backend-dev-DeleteDoc
+  GenerateUploadUrl: docman-backend-dev-GenerateUploadUrl
+  UpdateAttachment: docman-backend-dev-UpdateAttachment
 layers:
   None
 
 Stack Outputs
-AuthLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:serverless-Doc-app01-dev-Auth:9
-GenerateUploadUrlLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:serverless-Doc-app01-dev-GenerateUploadUrl:4
-UpdateTodoLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:serverless-Doc-app01-dev-UpdateTodo:4
-GetTodosLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:serverless-Doc-app01-dev-GetTodos:4
-DeleteTodoLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:serverless-Doc-app01-dev-DeleteTodo:4
-EnterpriseLogAccessIamRole: arn:aws:iam::305706552515:role/serverless-Doc-app01-dev-EnterpriseLogAccessIamRo-1FOFIWXUPFSKA
-CreateTodoLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:serverless-Doc-app01-dev-CreateTodo:4
-ServiceEndpoint: https://ve1l7uy6kj.execute-api.eu-west-1.amazonaws.com/dev
-ServerlessDeploymentBucketName: serverless-Doc-app01-de-serverlessdeploymentbuck-18cjqnd3a0ap2
+AuthLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:docman-backend-dev-Auth:12
+DeleteDocLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:docman-backend-dev-DeleteDoc:8
+GenerateUploadUrlLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:docman-backend-dev-GenerateUploadUrl:8
+GetDocsLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:docman-backend-dev-GetDocs:8
+CreateDocLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:docman-backend-dev-CreateDoc:8
+EnterpriseLogAccessIamRole: arn:aws:iam::305706552515:role/docman-backend-stack-EnterpriseLogAccessIamRole-HMHJ5WL7OCOE
+UpdateDocLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:docman-backend-dev-UpdateDoc:8
+UpdateAttachmentLambdaFunctionQualifiedArn: arn:aws:lambda:eu-west-1:305706552515:function:docman-backend-dev-UpdateAttachment:1
+ServiceEndpoint: https://8xhrfua85i.execute-api.eu-west-1.amazonaws.com/dev
+ServerlessDeploymentBucketName: docman-backend-stack-serverlessdeploymentbucket-oa4rvmysggtm
 
-Serverless: Removing old service artifacts from S3...
 Serverless: Publishing service to the Serverless Dashboard...
-Serverless: Successfully published your service to the Serverless Dashboard: https://dashboard.serverless.com/tenants/nithinmohantk1/applications/serverless-Doc-app01-app/services/serverless-Doc-app01/stage/dev/region/eu-west-1
+Serverless: Successfully published your service to the Serverless Dashboard: https://dashboard.serverless.com/tenants/nithinmohantk1/applications/docman-backend/services/docman-backend/stage/dev/region/eu-west-1
 ```

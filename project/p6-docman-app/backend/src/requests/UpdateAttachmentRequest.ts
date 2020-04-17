@@ -1,11 +1,9 @@
 /**
  * Fields in a request to update a single Doc item.
  */
-export interface UpdateDocRequest {
-  name: string
-  version?: string,
+export interface UpdateAttachmentRequest {
   type?: string,
   status?: string,
-  attachmentUrl?:string,
+  attachmentUrl:string,
   done: boolean
 }

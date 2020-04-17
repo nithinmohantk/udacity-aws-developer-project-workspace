@@ -7,7 +7,11 @@ import DocStorage from '../dal/docStorage';
 import { DocItem } from '../models/DocItem';
 import { CreateDocRequest } from '../requests/CreateDocRequest';
 import { UpdateDocRequest } from '../requests/UpdateDocRequest';
+/* tslint:disable */
+//import { UpdateAttachmentRequest } from '../requests/UpdateAttachmentRequest';
+/* tslint:enable */
 import { createLogger } from '../utils/logger'
+import { UploadFileInfo } from '../models/UploadFileInfo';
 const docsAccess = new DocAccess();
 const docStorage = new DocStorage();
 const logger = createLogger('Docs')
@@ -30,9 +34,10 @@ export async function createDoc(event: APIGatewayProxyEvent,
         docId: docId,
         createdAt,
         updatedAt,
-        status: "draft",
+        status: "draft", //initial creation it will be added as draft. After upload completion will be modified as final.
         version: "1.0.0",
-        type: "",
+        type: "n/a",
+        
         //attachmentUrl: `https://${docStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/docs/{userId}/${docId}.png`,
         ...createDocRequest
     };
@@ -99,6 +104,7 @@ export async function updateDoc(event: APIGatewayProxyEvent,
     const docId = event.pathParameters.docId;
     const userId = getUserId(event);
 
+    //Check if document record exists in DB, then continue else break and exit function.
     if (!(await docsAccess.getDocFromDB(docId, userId))) {
         return false;
     }
@@ -106,31 +112,61 @@ export async function updateDoc(event: APIGatewayProxyEvent,
 
     return true;
 }
+
 /**
+ * to update attachment info back to DB on successful upload.
  *
+ * @export
+ * @param {APIGatewayProxyEvent} event
+ * @param {UploadFileInfo} fileInfo
+ * @returns
+ */
+export async function updateAttachment(event:APIGatewayProxyEvent,fileInfo: UploadFileInfo) 
+{
+    const bucket = docStorage.getBucketName();
+    const region = docStorage.getBucketRegion();
+    const baseFolder = docStorage.getBucketBaseFolder();
+    const docId = event.pathParameters.docId;
+    const userId = getUserId(event);
+
+    const attachmentUrl = `https://${bucket}.${region}.amazonaws.com/${baseFolder}/${userId}/${docId}.${fileInfo.extn}`;
+
+      //Check if document record exists in DB, then continue with update attachment Info to DB. Else break.
+      if (!(await docsAccess.getDocFromDB(docId, userId))) {
+        return false;
+      }
+      logger.info(`{docId} :: {userId} :: {attachmentUrl}`);
+      await docsAccess.updateAttachmentInDB(docId, userId, attachmentUrl);
+
+      return true;
+}
+/**
+ * Generates Presigned Upload Url for the attachment. Later can be used to upload attachments to the specific resource location.
  *
  * @export
  * @param {APIGatewayProxyEvent} event
  * @returns
  */
-export async function generateUploadUrl(event: APIGatewayProxyEvent) {
+export async function generateUploadUrl(event: APIGatewayProxyEvent, fileInfo: UploadFileInfo) {
     const bucket = docStorage.getBucketName();
+    const region = docStorage.getBucketRegion();
+    const baseFolder = docStorage.getBucketBaseFolder();
     const urlExpiration = +process.env.AWS_S3_SIGNED_URL_EXPIRATION;
     const docId = event.pathParameters.docId;
     const userId = getUserId(event);
 
-    const attachmentUrl = `https://${docStorage.getBucketName()}.s3-eu-west-1.amazonaws.com/docs/${userId}/${docId}.png`;
+    const attachmentUrl = `https://${bucket}.${region}.amazonaws.com/${baseFolder}/${userId}/${docId}.${fileInfo.extn}`;
 
     const CreateSignedUrlRequest = {
         Bucket: bucket,
-        Key: `docs/${userId}/${docId}.png`,
+        Key: `${docStorage.getBucketBaseFolder()}/${userId}/${docId}.${fileInfo.extn}`,
         Expires: urlExpiration
     }
 
     var result = await docStorage.getPresignedUploadURL(CreateSignedUrlRequest);
     logger.info("docStorage.getPresignedUploadURL", result);
 
-    //update attachment Info to DB.
+    //Check if document record exists in DB, then continue with update attachment Info to DB. Else break.
     if (!(await docsAccess.getDocFromDB(docId, userId))) {
       return false;
     }

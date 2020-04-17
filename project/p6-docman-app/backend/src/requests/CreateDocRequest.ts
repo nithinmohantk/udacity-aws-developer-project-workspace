@@ -3,5 +3,7 @@
  */
 export interface CreateDocRequest {
   name: string
-  dueDate: string
+  version?: string,
+  type?: string,
+  status?: string,
 }
