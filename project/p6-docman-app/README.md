@@ -111,7 +111,7 @@ Application uses necessary logging of information with context details.
 
 ### To deploy an application run the following commands:
 
-```
+```ts
 cd backend
 npm install
 sls deploy -v
@@ -125,13 +125,15 @@ sls remove --force
 
 To run a client application first edit the `client/src/config.ts` file to set correct parameters. And then run the following commands:
 
-```
+```ts
 cd client
 npm install
 npm run start
 ```
 
-This should start a development server with the React application that will interact with the serverless Doc application.
+This should start a development server(on port 3001) with the React application that will interact with the serverless Doc application.
+
+Open browser and type in ```https://localhost:3001```
 
 ## Using dynamodb-locally 
 

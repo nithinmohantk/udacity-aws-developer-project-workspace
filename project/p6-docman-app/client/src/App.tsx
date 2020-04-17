@@ -7,6 +7,7 @@ import { EditDoc } from './components/EditDoc'
 import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { Docs } from './components/Docs'
+import "./App.scss"
 
 export interface AppProps {}
 
@@ -35,18 +36,31 @@ export default class App extends Component<AppProps, AppState> {
 
   render() {
     return (
-      <div>
-        <Segment style={{ padding: '8em 0em' }} vertical>
+      <div className="App section">
+       
+        <Segment style={{ padding: '1em 0em' }} vertical>
           <Grid container stackable verticalAlign="middle">
+          <Grid.Row>
+              <Grid.Column width={16}>
+              <div className="app-header"><h1>Doc Man</h1></div>
+              </Grid.Column>
+          </Grid.Row>
             <Grid.Row>
               <Grid.Column width={16}>
                 <Router history={this.props.history}>
                   {this.generateMenu()}
 
+                 <div className="app-content">
                   {this.generateCurrentPage()}
+                  </div>
                 </Router>
               </Grid.Column>
             </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={16}>
+              <div className="app-footer">©2020, Imaginary Technologies Corportation</div>
+              </Grid.Column>
+          </Grid.Row>
           </Grid>
         </Segment>
       </div>

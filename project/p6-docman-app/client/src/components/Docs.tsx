@@ -44,7 +44,19 @@ export class Docs extends React.PureComponent<DocsProps, DocsState> {
     this.props.history.push(`/Docs/${docId}/edit`)
   }
 
+  onViewButtonClick = (docId: string, attachmentUrl?: string) => {
+    //this.props.history.push(`/Docs/${docId}/edit`)
+
+    if(attachmentUrl)
+      window.open(attachmentUrl, "_blank");
+    else 
+       alert('No attachment found. Please upload first')
+  }
+
   onDocCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+   
+    if(this.state.newDocName)
+    {
     try {
       const newDoc = await createDoc(this.props.auth.getIdToken(), {
         name: this.state.newDocName,
@@ -57,6 +69,11 @@ export class Docs extends React.PureComponent<DocsProps, DocsState> {
     } catch {
       alert('Doc creation failed')
     }
+   }
+   else 
+   {
+    alert('Please enter doc name first')
+   }
   }
 
   onDocDelete = async (docId: string) => {
@@ -126,7 +143,7 @@ export class Docs extends React.PureComponent<DocsProps, DocsState> {
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="Enter new document name"
             onChange={this.handleNameChange}
           />
         </Grid.Column>
@@ -182,11 +199,14 @@ renderDocsList() {
                   checked={Doc.status =="final"}
                 />
               </Grid.Column>
-              <Grid.Column width={10} verticalAlign="middle">
+              <Grid.Column width={5} verticalAlign="middle" floated="left">
                 {Doc.name}
               </Grid.Column>
-              <Grid.Column width={3} floated="right">
+              <Grid.Column width={2} floated="right">
                 {Doc.version}
+              </Grid.Column>
+              <Grid.Column width={2} floated="right">
+                {Doc.type}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
@@ -206,9 +226,20 @@ renderDocsList() {
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {Doc.attachmentUrl && (
+              <Grid.Column width={1} floated="right">
+      
+                <Button
+                  icon
+                  color="green"
+                  disabled= {Doc.attachmentUrl? false:true}
+                  onClick={() => this.onViewButtonClick(Doc.docId, Doc.attachmentUrl)}
+                >
+                  <Icon name="download" />
+                </Button>
+              </Grid.Column>
+              {/* {Doc.attachmentUrl && (
                 <a href={Doc.attachmentUrl}  target="_blank" title={Doc.name}>View</a>
-              )}
+              )} */}
               <Grid.Column width={16}>
                 <Divider />
               </Grid.Column>
