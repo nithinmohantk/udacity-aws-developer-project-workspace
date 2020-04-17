@@ -149,29 +149,20 @@ export async function updateAttachment(event:APIGatewayProxyEvent,fileInfo: Uplo
  */
 export async function generateUploadUrl(event: APIGatewayProxyEvent, fileInfo: UploadFileInfo) {
     const bucket = docStorage.getBucketName();
-    const region = docStorage.getBucketRegion();
+    //const region = docStorage.getBucketRegion();
     const baseFolder = docStorage.getBucketBaseFolder();
     const urlExpiration = +process.env.AWS_S3_SIGNED_URL_EXPIRATION;
     const docId = event.pathParameters.docId;
     const userId = getUserId(event);
-
-    const attachmentUrl = `https://${bucket}.${region}.amazonaws.com/${baseFolder}/${userId}/${docId}.${fileInfo.extn}`;
-
+    //const attachmentUrl = `https://${bucket}.${region}.amazonaws.com/${baseFolder}/${userId}/${docId}.${fileInfo.extn}`;
     const CreateSignedUrlRequest = {
         Bucket: bucket,
-        Key: `${docStorage.getBucketBaseFolder()}/${userId}/${docId}.${fileInfo.extn}`,
+        Key: `${baseFolder}/${userId}/${docId}.${fileInfo.extn}`,
         Expires: urlExpiration
     }
 
     var result = await docStorage.getPresignedUploadURL(CreateSignedUrlRequest);
     logger.info("docStorage.getPresignedUploadURL", result);
-
-    //Check if document record exists in DB, then continue with update attachment Info to DB. Else break.
-    if (!(await docsAccess.getDocFromDB(docId, userId))) {
-      return false;
-    }
-    logger.info(`{docId} :: {userId} :: {attachmentUrl}`);
-    await docsAccess.updateAttachmentInDB(docId, userId, attachmentUrl);
 
   return result;
 }
