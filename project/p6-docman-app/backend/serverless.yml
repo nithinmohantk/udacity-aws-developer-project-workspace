@@ -1,0 +1,290 @@
+org: nithinmohantk1
+app: docman-backend
+service:
+  name: docman-backend
+frameworkVersion: '>=1.0.0 <2.0.0'
+plugins:
+  - serverless-webpack
+  - serverless-reqvalidator-plugin
+  - serverless-iam-roles-per-function
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-plugin-tracing
+  - serverless-plugin-aws-alerts
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'eu-west-1'}
+  stackName: docman-backend-stack # Use a custom name for the CloudFormation stack
+  apiName: thingx-docman-api # Use a custom name for the API Gateway API
+  baseFolder: docs
+# disabled tracing due to - The provided execution role does not have permissions to call PutTraceSegments on XRAY
+# even after setting permissions in IAM
+  tracing:
+    lambda: true
+    apiGateway: true
+
+  environment:
+    AWS_DB_APP_TABLE: docman-table-${self:provider.stage}
+    AWS_DB_INDEX_NAME: UserIdIndex
+    AWS_S3_BUCKET: docman-storage-${self:provider.stage}
+    AWS_S3_SIGNED_URL_EXPIRATION: 9000
+    AWS_S3_BUCKET_REGION: s3-${self:provider.region}
+    AWS_S3_BUCKET_BASEFOLDER: ${self:provider.baseFolder}
+
+ # Global roles/permissions
+  iamRoleStatements:
+    - Effect: "Allow" # xray permissions (required)
+      Action:
+        - "xray:PutTraceSegments"
+        - "xray:PutTelemetryRecords"
+      Resource:
+        - "*"
+    # - Effect: Allow
+    #   Action:
+    #     - codedeploy:*
+    #   Resource:
+    #     - '*'
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::${self:provider.environment.AWS_S3_BUCKET}/*
+
+custom:
+
+  serverless-offline:
+    port: 3003
+
+  dynamodb:
+    start:
+      migrate: true
+      inMemory: true
+    stages:
+      - dev
+
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: DocMan API
+        description: Serverless API application for DocMan frontend
+  alerts:
+    stages:
+      - production
+    topics:
+      alarm:
+        topic: ${self:service}-${self:provider.stage}-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: nithinmohantk@hotmail.com # Change this to your email address
+    alarms:
+      - functionErrors
+      - functionThrottles
+
+functions:
+
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
+
+  GetDocs:
+    handler: src/lambda/http/getDocs.handler
+    events:
+      - http:
+          method: get
+          path: docs
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}/index/${self:provider.environment.AWS_DB_INDEX_NAME}
+
+  CreateDoc:
+    handler: src/lambda/http/createDoc.handler
+    events:
+      - http:
+          method: post
+          path: docs
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
+
+  UpdateDoc:
+    handler: src/lambda/http/updateDoc.handler
+    events:
+      - http:
+          method: patch
+          path: docs/{docId}
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
+
+  DeleteDoc:
+    handler: src/lambda/http/deleteDoc.handler
+    events:
+      - http:
+          method: delete
+          path: docs/{docId}
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
+
+  GenerateUploadUrl:
+    handler: src/lambda/http/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          path: docs/{docId}/attachment
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.AWS_S3_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
+    
+  UpdateAttachment:
+    handler: src/lambda/http/updateAttachment.handler
+    events:
+      - http:
+          method: patch
+          path: docs/{docId}/attachment
+          cors: true
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ApiGatewayRestApi
+    # API Gateway
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      DependsOn: ApiGatewayRestApi
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+#          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+#          gatewayresponse.header.Access-Control-Allow-Methods: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,PUT,DELETE,PATCH'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          !Ref ApiGatewayRestApi
+        #StatusCode: '404'
+
+    # DynamoDB
+    docsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+          - AttributeName: docId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: docId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.AWS_DB_APP_TABLE}
+        LocalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.AWS_DB_INDEX_NAME}
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+    # S3 Bucket
+    DeployS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.AWS_S3_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+
+    # S3 Bucket Policy
+    DeployS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: Policy
+          Version: '2012-10-17'
+          Statement:
+            - Sid: PublicReadWriteBucketPolicy
+              Effect: Allow
+              Principal: '*'
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+              Resource: arn:aws:s3:::${self:provider.environment.AWS_S3_BUCKET}/*
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.AWS_S3_BUCKET}/*'
+        Bucket: !Ref DeployS3Bucket
