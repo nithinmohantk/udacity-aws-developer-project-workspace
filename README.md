@@ -17,11 +17,13 @@ This repository contains my practical project works for **Udacity Cloud Develope
 - - _udacity-c2-frontend_ 
 - **project**  - contains actual project work submitted as part of the assignments for the curriculam
 
-- - Project 1: Static site_Upload_s3
-- - Project 2: Image-filter-service (Udagram API)
-- - Project 3: GitHub Profile 
-- - Project 4: Refactor Udagram app into Microservices and Deploy - _In this project, you will reuse their existing Udagram application and convert and extend into a microservice architecture._
-- - 
+- - Project 1: Static site_Upload_s3 - [project/staticsite_upload_s3](project/staticsite_upload_s3)
+- - Project 2: Image-filter-service (Udagram API) - [project/image-filter-udagram-app](project/image-filter-udagram-app)
+- - Project 3: GitHub Profile modification and review - [my-github-profile](https://github.com/nithinmohantk)
+- - Project 4: Refactor Udagram app into Microservices and Deploy - _In this project, you will reuse their existing Udagram application and convert and extend into a microservice architecture._ - [project/c2-microservices-v1](project/c2-microservices-v1)
+- - Project 5: Serverless - using serverless framework and AWS lambda functions - [project/c4-serverless-app](project/c4-serverless-app)
+- - Project 6: LinkedIn Profile modification and review - [my-linkedin-profile](https://linkedin.com/in/nithinmohantk)
+- - Project 7: Capstone Project - Document Manager [project/p6-docman-app](project/p6-docman-app)
 
 ## Installation 
  The samples and projects found in this repository are created using Visual Studio Code and Node.js/NPM/ExpressJS stack and it require certain global NPM components and project NPM components(project.json). 
