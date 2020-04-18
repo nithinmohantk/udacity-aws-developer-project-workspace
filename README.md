@@ -74,6 +74,7 @@ npm install
 ```
 
 ## Usage 
+You can use the source code in repository under MIT License without any warranty or support. Free to use, without any royalty.
 
 ## Completion Certificate
 ![Completion Cert](images/certificate.png)
