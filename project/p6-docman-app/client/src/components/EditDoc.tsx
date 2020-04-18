@@ -9,7 +9,8 @@ enum UploadState {
   FetchingPresignedUrl,
   UploadingFile,
   UploadingComplete,
-  UpdateAttachmentCompletion
+  UpdateAttachmentCompletion,
+  UploadingFileFailed
 }
 
 interface EditDocProps {
@@ -44,37 +45,51 @@ export class EditDoc extends React.PureComponent<
     })
   }
 
-  getFileExtension(filename:string)
-  {
+  /**
+   * Get file extension
+   *
+   * @param {string} filename
+   * @returns
+   * @memberof EditDoc
+   */
+  getFileExtension(filename: string) {
     var ext = /^.+\.([^.]+)$/.exec(filename);
     return ext == null ? "" : ext[1];
   }
 
+  /**
+   * Get a file info
+   *
+   * @param {*} item
+   * @returns
+   * @memberof EditDoc
+   */
   getFileInfo(item: any) {
-   
-    const fileInfo:UploadFileInfo  = {
+
+    const fileInfo: UploadFileInfo = {
       name: item.name,
       extn: this.getFileExtension(item.name),
       type: item.type,
       mimetype: item.type,
       size: item.size
-    }; 
+    };
     try {
       if (!this.state.file) {
-        alert('File should be selected')
+        alert('File to upload should be selected.')
         return
       }
 
-      // alert('File was uploaded successfully!')
     } catch (e) {
       alert('Could not read file: ' + e.message)
     } finally {
-      
-      
     }
     return fileInfo;
   }
-
+  /**
+   * Handle upload button event.
+   *
+   * @memberof EditDoc
+   */
   handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
 
@@ -85,15 +100,15 @@ export class EditDoc extends React.PureComponent<
       }
       console.log(`Selected File ${this.state.file}`);
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const fileInfo:UploadFileInfo = await this.getFileInfo(this.state.file) as UploadFileInfo;
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.docId,fileInfo)
+      const fileInfo: UploadFileInfo = await this.getFileInfo(this.state.file) as UploadFileInfo;
+      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.docId, fileInfo)
 
       this.setUploadState(UploadState.UploadingFile)
       await uploadFile(uploadUrl, this.state.file)
         .then(() => {
           this.setUploadState(UploadState.UpdateAttachmentCompletion);
         });
-      await updateAttachmentCompletion(this.props.auth.getIdToken(), this.props.match.params.docId,fileInfo)
+      await updateAttachmentCompletion(this.props.auth.getIdToken(), this.props.match.params.docId, fileInfo)
         .then(() => {
           this.setUploadState(UploadState.UploadingComplete);
         });
@@ -106,9 +121,9 @@ export class EditDoc extends React.PureComponent<
     }
   }
 
-  
+
   /**
-   *
+   * update the react component state to indicate upload status
    *
    * @param {UploadState} uploadState
    * @memberof EditDoc

@@ -1,0 +1,24 @@
+branch-defaults:
+  default:
+    environment: null
+    group_suffix: null
+deploy:
+  artifact: ./release/Archive.zip
+environment-defaults:
+  docman-app-dev:
+    branch: null
+    repository: null
+global:
+  application_name: docman-app
+  branch: null
+  default_ec2_keyname: null
+  default_platform: Node.js
+  default_region: eu-west-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: null
+  sc: null
+  workspace_type: Application
