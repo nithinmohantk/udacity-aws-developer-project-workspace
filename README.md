@@ -11,13 +11,13 @@ This repository contains my practical project works for **Udacity Cloud Develope
 
 ### Folder Structure 
 
-- **exercises** - contains sample works as part of the labs from the chapters.
+* **exercises** - contains sample works as part of the labs from the chapters.
 - - _udacity-c2-basic-server_ - [exercises/udacity-c2-basic-server](exercises/udacity-c2-basic-server)
 - - _udacity-c2-restapi_ - [exercises/udacity-c2-frontend](exercises/udacity-c2-frontend)
 - - _udacity-c2-frontend_ - [exercises/udacity-c2-restapi](exercises/udacity-c2-restapi)
 - - _c4-serverless-demos_ - [exercises/c4-demos-master](exercises/c4-demos-master)
 - - _c4-frontend-client_ - [exercises/c4-client-master](exercises/c4-client-master)
-- **project**  - contains actual project work submitted as part of the assignments for the curriculam
+* **project**  - contains actual project work submitted as part of the assignments for the curriculam
 
 - - Project 1: Static site_Upload_s3 - [project/staticsite_upload_s3](project/staticsite_upload_s3)
 - - Project 2: Image-filter-service (Udagram API) - [project/image-filter-udagram-app](project/image-filter-udagram-app)
@@ -75,6 +75,8 @@ npm install
 
 ## Usage 
 
+## Completion Certificate
+![Completion Cert](images/certificate.png)
 
 ### License 
 MIT License © 2020
