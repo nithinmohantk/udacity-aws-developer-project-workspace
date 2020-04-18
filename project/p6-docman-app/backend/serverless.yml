@@ -35,7 +35,7 @@ provider:
     AWS_S3_BUCKET_REGION: s3-${self:provider.region}
     AWS_S3_BUCKET_BASEFOLDER: ${self:provider.baseFolder}
 
- # Global roles/permissions
+ # Global roles/permissions - as individual permissions were not getting effective for these components.
   iamRoleStatements:
     - Effect: "Allow" # xray permissions (required)
       Action:
@@ -80,7 +80,7 @@ custom:
         topic: ${self:service}-${self:provider.stage}-alerts-alarm
         notifications:
           - protocol: email
-            endpoint: nithinmohantk@hotmail.com # Change this to your email address
+            endpoint: nithin.social@gmail.com # Change this to your email address
     alarms:
       - functionErrors
       - functionThrottles
@@ -168,11 +168,6 @@ functions:
           - s3:PutObject
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.AWS_S3_BUCKET}/*
-      - Effect: Allow
-        Action:
-          - dynamodb:UpdateItem
-          - dynamodb:GetItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.AWS_DB_APP_TABLE}
     
   UpdateAttachment:
     handler: src/lambda/http/updateAttachment.handler

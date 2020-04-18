@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "DocMan App",
+  "name": "DocMan - Your secure personal document storage",
   "icons": [
     {
       "src": "favicon.ico",

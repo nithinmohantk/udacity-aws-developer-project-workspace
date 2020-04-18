@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "d0700d24-79ec-487e-8403-b565bef7f8e0",
-		"name": "Udacity Capstone - DocMan* Project",
+		"_postman_id": "5fc5b352-6cd3-4449-98fc-1c5409316ca2",
+		"name": "Capstone DocMan Project",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -19,10 +19,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{apiId}}.execute-api.eu-west-1.amazonaws.com/dev/docs",
 							"protocol": "https",
@@ -60,7 +56,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Sample Doc1\",\n\t\"version\": \"2019-06-11\"\n}"
+							"raw": "{\n\t\"name\": \"Test Doc\",\n\t\"version\": \"1.0.0\",\n\t\"status\": \"draft\"\n}"
 						},
 						"url": {
 							"raw": "https://{{apiId}}.execute-api.eu-west-1.amazonaws.com/dev/docs",
@@ -99,10 +95,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Change the world\",\n\t\"dueDate\": \"2019-12-11\",\n\t\"done\": true\n}"
+							"raw": "{\n\t\"name\": \"Change the doc\",\n\t\"version\": \"2019-12-11\",\n\t\"type\": \"docx\",\n\t\"status\": \"complete\",\n\t\"done\": true\n}"
 						},
 						"url": {
-							"raw": "https://{{apiId}}.execute-api.eu-west-1.amazonaws.com/dev/docs/35dd600f-43c2-4649-903c-615e1586a26f",
+							"raw": "https://{{apiId}}.execute-api.eu-west-1.amazonaws.com/dev/docs/72229749-2b66-44bb-9044-d164af627102",
 							"protocol": "https",
 							"host": [
 								"{{apiId}}",
@@ -114,7 +110,7 @@
 							"path": [
 								"dev",
 								"docs",
-								"35dd600f-43c2-4649-903c-615e1586a26f"
+								"72229749-2b66-44bb-9044-d164af627102"
 							]
 						}
 					},
@@ -194,6 +190,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Update Attachment URL to DB",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{apiId}}.execute-api.eu-west-1.amazonaws.com/dev/docs/3836b777-9bc4-4429-9b79-ba4e4f5f91c0/attachment",
+							"protocol": "https",
+							"host": [
+								"{{apiId}}",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"docs",
+								"3836b777-9bc4-4429-9b79-ba4e4f5f91c0",
+								"attachment"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -217,7 +248,8 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -244,16 +276,17 @@
 	],
 	"variable": [
 		{
-			"id": "bf208e6b-f66d-4008-9366-dd541ff65425",
+			"id": "11e0bfa2-7619-42a8-ad27-32a934696afd",
 			"key": "apiId",
-			"value": "",
+			"value": "8xhrfua85i",
 			"type": "string"
 		},
 		{
-			"id": "9bc6399a-d2bb-4f2d-9ffa-8480370d383c",
+			"id": "b26e59e2-c909-40b8-a81f-364c7691a87b",
 			"key": "authToken",
-			"value": "",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkZwbjRoa0t6YTVmcHFXSUV5SVd3YiJ9.eyJpc3MiOiJodHRwczovL3RoaW5neGNsb3VkLWRldi5ldS5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTQwMTQxNDgzOTUyNjcxOTU2NTkiLCJhdWQiOiJLZXg0ZEZLRld1dUlPcmhtcFJuZGVxcHFCekVKdHRTNSIsImlhdCI6MTU4NzIwMjIwMCwiZXhwIjoxNTg3MjM4MjAwLCJhdF9oYXNoIjoiR1AwQWpXTUVIVXh3emk3Q1lWZkFCUSIsIm5vbmNlIjoibExjbTJxTS03UHV6Z2R3QW1jYVBGcEwzaFRoSGFPNkwifQ.dTx9yTNooLQ6cnNbINLmBbZBttj2S4dwMNgsVdC4aWvdgf_uxV8vNGxT3ehtzrNFuZjOqLCE6h7zkmF9MGJysrorCWrBnId7yEm2cYtk4NAg6Nb5GJVVgJKhjlpAPljYdX88zedFwClnynG3EDKZi2Q7D-bv0n9BBwfKnnWJhju6_qkVYPMWp1GQUK5apoN9hTSV3FzZ7HMx277JEv_jL-6-wdAMUebnUHAcOhWPn9NjWYuXBpZITrczfvTG58ubqgk0S71-nJEyErqKspaS6Dwb2cK1AFUZidJsXEIy2JLaDXBaBqnDNBPjVCOG2-4DxVSGBQTryAvGQqEDFbdkDg",
 			"type": "string"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
