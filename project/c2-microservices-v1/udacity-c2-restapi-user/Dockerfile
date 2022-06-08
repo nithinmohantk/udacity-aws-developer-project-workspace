@@ -1,5 +1,5 @@
 # Set the base image
-FROM node:17.8-bullseye-slim
+FROM node:17-bullseye-slim
 # Create app directory
 WORKDIR /usr/src/app
 # Copy package.json AND package-lock.json
