@@ -1,5 +1,5 @@
 # Set the base image
-FROM node:18.9.1-slim
+FROM node:18-slim
 # Create app directory
 WORKDIR /usr/src/app
 # Copy package.json AND package-lock.json
