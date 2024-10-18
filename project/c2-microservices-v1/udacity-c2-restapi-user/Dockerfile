@@ -1,5 +1,5 @@
 # Set the base image
-FROM node:18.20.3-slim
+FROM node:hydrogen-bookworm-slim
 # Create app directory
 WORKDIR /usr/src/app
 # Copy package.json AND package-lock.json
