@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Document Manager app backend services",
   "dependencies": {
-    "@types/axios": "^0.14.0",
+    "@types/axios": "^0.14.4",
     "@types/http-errors": "^1.6.1",
     "aws-embedded-metrics": "^1.1.1",
     "aws-xray-sdk": "^2.2.0",
