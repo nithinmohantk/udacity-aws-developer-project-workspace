@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Serverless TODO image app",
   "dependencies": {
-    "@types/axios": "^0.14.0",
+    "@types/axios": "^0.14.4",
     "@types/http-errors": "^1.6.1",
     "aws-xray-sdk": "^2.2.0",
     "axios": "^0.19.0",
     "http-errors": "^1.7.2",
     "jsonwebtoken": "^8.5.1",
     "middy": "^0.27.0",
-    "serverless-offline": "^9.0.0",
+    "serverless-offline": "^13.8.2",
     "source-map-support": "^0.5.11",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
