@@ -20,8 +20,6 @@ WORKDIR /usr/src/app
 
 # Copy the entire src directory
 COPY src/ ./src/
-COPY package*.json ./
-COPY README.md LICENSE ./
 
 # Set the project path as build argument
 ARG PROJECT_PATH

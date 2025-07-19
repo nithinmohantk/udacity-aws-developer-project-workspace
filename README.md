@@ -78,6 +78,9 @@ npm install
 ## Usage 
 You can use the source code in repository under MIT License without any warranty or support. Free to use, without any royalty.
 
+## Docker Support
+This repository includes Docker support for containerizing the various projects. See [DOCKER.md](DOCKER.md) for detailed instructions on building and running Docker images.
+
 ## Completion Certificate
 ![Completion Cert](images/certificate.png)
 
