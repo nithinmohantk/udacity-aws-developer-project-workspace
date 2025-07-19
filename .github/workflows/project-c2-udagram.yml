@@ -24,9 +24,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd project/image-filter-udagram-app/
-    - run: cd project/image-filter-udagram-app/ && npm ci
-    - run: cd project/image-filter-udagram-app/ && npm run build --if-present
-    #- run: cd exercises/udacity-c2-restapi/ && npm test
+    - run: cd src/project/image-filter-udagram-app/
+    - run: cd src/project/image-filter-udagram-app/ && npm ci
+    - run: cd src/project/image-filter-udagram-app/ && npm run build --if-present
+    #- run: cd src/exercises/udacity-c2-restapi/ && npm test
       env:
         CI: true

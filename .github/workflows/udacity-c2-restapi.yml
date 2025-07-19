@@ -24,9 +24,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd exercises/udacity-c2-restapi/
-    - run: cd exercises/udacity-c2-restapi/ && npm ci
-    - run: cd exercises/udacity-c2-restapi/ && npm run build --if-present
-    #- run: cd exercises/udacity-c2-restapi/ && npm test
+    - run: cd src/exercises/udacity-c2-restapi/
+    - run: cd src/exercises/udacity-c2-restapi/ && npm ci
+    - run: cd src/exercises/udacity-c2-restapi/ && npm run tsc --if-present
+    #- run: cd src/exercises/udacity-c2-restapi/ && npm test
       env:
         CI: true

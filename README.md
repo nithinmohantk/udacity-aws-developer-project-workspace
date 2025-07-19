@@ -11,21 +11,23 @@ This repository contains my practical project works for **Udacity Cloud Develope
 
 ### Folder Structure 
 
-* **exercises** - contains sample works as part of the labs from the chapters.
-- - _udacity-c2-basic-server_ - [exercises/udacity-c2-basic-server](exercises/udacity-c2-basic-server)
-- - _udacity-c2-restapi_ - [exercises/udacity-c2-frontend](exercises/udacity-c2-frontend)
-- - _udacity-c2-frontend_ - [exercises/udacity-c2-restapi](exercises/udacity-c2-restapi)
-- - _c4-serverless-demos_ - [exercises/c4-demos-master](exercises/c4-demos-master)
-- - _c4-frontend-client_ - [exercises/c4-client-master](exercises/c4-client-master)
-* **project**  - contains actual project work submitted as part of the assignments for the curriculam
-
-- - Project 1: Static site_Upload_s3 - [project/staticsite_upload_s3](project/staticsite_upload_s3)
-- - Project 2: Image-filter-service (Udagram API) - [project/image-filter-udagram-app](project/image-filter-udagram-app)
-- - Project 3: GitHub Profile modification and review - [my-github-profile](https://github.com/nithinmohantk)
-- - Project 4: Refactor Udagram app into Microservices and Deploy - _In this project, you will reuse their existing Udagram application and convert and extend into a microservice architecture._ - [project/c2-microservices-v1](project/c2-microservices-v1)
-- - Project 5: Serverless - using serverless framework and AWS lambda functions - [project/c4-serverless-app](project/c4-serverless-app)
-- - Project 6: LinkedIn Profile modification and review - [my-linkedin-profile](https://linkedin.com/in/nithinmohantk)
-- - Project 7: Capstone Project - Document Manager [project/p6-docman-app](project/p6-docman-app)
+* **src/** - contains all source code organized by category
+  * **exercises** - contains sample works as part of the labs from the chapters.
+  - - _udacity-c2-basic-server_ - [src/exercises/udacity-c2-basic-server](src/exercises/udacity-c2-basic-server)
+  - - _udacity-c2-restapi_ - [src/exercises/udacity-c2-frontend](src/exercises/udacity-c2-frontend)
+  - - _udacity-c2-frontend_ - [src/exercises/udacity-c2-restapi](src/exercises/udacity-c2-restapi)
+  - - _c4-serverless-demos_ - [src/exercises/c4-demos-master](src/exercises/c4-demos-master)
+  - - _c4-frontend-client_ - [src/exercises/c4-client-master](src/exercises/c4-client-master)
+  * **project**  - contains actual project work submitted as part of the assignments for the curriculam
+  - - Project 1: Static site_Upload_s3 - [src/project/staticsite_upload_s3](src/project/staticsite_upload_s3)
+  - - Project 2: Image-filter-service (Udagram API) - [src/project/image-filter-udagram-app](src/project/image-filter-udagram-app)
+  - - Project 3: GitHub Profile modification and review - [my-github-profile](https://github.com/nithinmohantk)
+  - - Project 4: Refactor Udagram app into Microservices and Deploy - _In this project, you will reuse their existing Udagram application and convert and extend into a microservice architecture._ - [src/project/c2-microservices-v1](src/project/c2-microservices-v1)
+  - - Project 5: Serverless - using serverless framework and AWS lambda functions - [src/project/c4-serverless-app](src/project/c4-serverless-app)
+  - - Project 6: LinkedIn Profile modification and review - [my-linkedin-profile](https://linkedin.com/in/nithinmohantk)
+  - - Project 7: Capstone Project - Document Manager [src/project/p6-docman-app](src/project/p6-docman-app)
+  * **starter** - contains starter code templates
+  * **ci-scripts** - contains CI/CD scripts and utilities
 
 ## Installation 
  The samples and projects found in this repository are created using Visual Studio Code and Node.js/NPM/ExpressJS stack and it require certain global NPM components and project NPM components(project.json). 
@@ -75,6 +77,9 @@ npm install
 
 ## Usage 
 You can use the source code in repository under MIT License without any warranty or support. Free to use, without any royalty.
+
+## Docker Support
+This repository includes Docker support for containerizing the various projects. See [DOCKER.md](DOCKER.md) for detailed instructions on building and running Docker images.
 
 ## Completion Certificate
 ![Completion Cert](images/certificate.png)
