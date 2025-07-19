@@ -1,0 +1,70 @@
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+*.md
+docs/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Images and media (keep certificate images in root)
+images/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+!images/certificate.png
+
+# Test files
+test/
+tests/
+__tests__/
+*.test.js
+*.spec.js
+
+# Coverage
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Other project artifacts
+*.tar.gz
+*.zip
