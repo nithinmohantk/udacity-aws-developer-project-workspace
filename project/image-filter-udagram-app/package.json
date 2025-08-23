@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "jimp": "^0.10.0"
+    "jimp": "^0.16.0"
   }
 }
