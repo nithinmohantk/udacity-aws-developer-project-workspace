@@ -669,33 +669,49 @@ echo "To rollback: aws lambda update-alias --function-name $FUNCTION_NAME --name
 import boto3
 import concurrent.futures
 from typing import List, Dict
+import time
 
 lambda_client = boto3.client('lambda')
 
 def update_lambda_config(function_name: str, **kwargs) -> Dict:
-    """Update Lambda configuration"""
-    try:
-        response = lambda_client.update_function_configuration(
-            FunctionName=function_name,
-            **kwargs
-        )
-        return {
-            'function': function_name,
-            'status': 'success',
-            'message': f'Updated {function_name}'
-        }
-    except Exception as e:
-        return {
-            'function': function_name,
-            'status': 'error',
-            'message': str(e)
-        }
+    """Update Lambda configuration with rate limiting"""
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = lambda_client.update_function_configuration(
+                FunctionName=function_name,
+                **kwargs
+            )
+            return {
+                'function': function_name,
+                'status': 'success',
+                'message': f'Updated {function_name}'
+            }
+        except lambda_client.exceptions.TooManyRequestsException:
+            if attempt < max_retries - 1:
+                wait_time = (2 ** attempt) * 0.5  # Exponential backoff
+                time.sleep(wait_time)
+                continue
+            return {
+                'function': function_name,
+                'status': 'error',
+                'message': 'Rate limited after retries'
+            }
+        except Exception as e:
+            return {
+                'function': function_name,
+                'status': 'error',
+                'message': str(e)
+            }
 
 def bulk_update_memory(functions: List[str], memory_size: int):
     """Update memory for multiple Lambda functions"""
     print(f"Updating memory to {memory_size}MB for {len(functions)} functions...")
     
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    # Limit concurrency to avoid rate limits (default: 5)
+    max_workers = min(5, len(functions))
+    
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [
             executor.submit(update_lambda_config, func, MemorySize=memory_size)
             for func in functions

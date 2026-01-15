@@ -15,6 +15,8 @@ Architectural patterns and practices for building scalable, reliable, and resili
 
 **Example: Lambda with Retry Logic**
 ```javascript
+// Note: Using AWS SDK v2 for compatibility with existing codebase
+// For new projects, consider AWS SDK v3: @aws-sdk/client-dynamodb
 const retry = require('async-retry');
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB.DocumentClient();

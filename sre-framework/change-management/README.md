@@ -59,7 +59,7 @@ Resources:
       FunctionVersion: !GetAtt NewVersion.Version
       RoutingConfig:
         AdditionalVersionWeights:
-          - FunctionVersion: !GetAtt OldVersion.Version
+          - FunctionVersion: "$LATEST"  # Reference to previous version
             FunctionWeight: 0  # 100% to new version
 ```
 
@@ -110,7 +110,11 @@ ERROR_COUNT=$(aws cloudwatch get-metric-statistics \
   --query 'Datapoints[0].Sum' \
   --output text)
 
-if [ "$ERROR_COUNT" != "0.0" ] && [ "$ERROR_COUNT" != "None" ]; then
+# Convert to integer for comparison, default to 0 if None
+ERROR_COUNT_INT=$(echo "$ERROR_COUNT" | grep -E '^[0-9]+(\.[0-9]+)?$' | awk '{print int($1+0.5)}')
+ERROR_COUNT_INT=${ERROR_COUNT_INT:-0}
+
+if [ "$ERROR_COUNT_INT" -gt 0 ]; then
   echo "❌ Errors detected! Rolling back..."
   aws lambda update-alias \
     --function-name $FUNCTION_NAME \
