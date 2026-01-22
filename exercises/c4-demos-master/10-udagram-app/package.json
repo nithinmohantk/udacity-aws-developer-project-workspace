@@ -4,7 +4,9 @@
   "description": "Serverless images sharing application",
   "main": "handler.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "dependencies": {
     "aws-serverless-express": "^3.3.6",
@@ -16,7 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "middy": "^0.25.0",
     "source-map-support": "^0.5.11",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
@@ -39,5 +42,6 @@
     "webpack": "^4.29.6"
   },
   "author": "Ivan Mushketyk",
-  "license": "MIT"
+  "license": "MIT",
+  "snyk": true
 }
