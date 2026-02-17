@@ -13,7 +13,8 @@
     "serverless-offline": "^9.0.0",
     "source-map-support": "^0.5.11",
     "uuid": "^3.3.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
@@ -32,5 +33,10 @@
     "webpack": "^4.29.6"
   },
   "author": "Ivan Mushketyk",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
+  "snyk": true
 }
